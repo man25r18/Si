@@ -94,3 +94,54 @@
     </div>
   </div>
 </body>
+  <script>
+  const display = document.getElementById('display');
+  const buttons = document.querySelectorAll('.buttons button');
+  let expression = '';
+
+  function updateDisplay() {
+    display.textContent = expression || '0';
+
+    // Adatta dinamicamente la dimensione del font in base alla lunghezza
+    const length = display.textContent.length;
+    if (length > 10) {
+      display.style.fontSize = '10vw';
+    } else {
+      display.style.fontSize = '15vw';
+    }
+  }
+
+  buttons.forEach(btn => {
+    btn.addEventListener('click', () => {
+      const val = btn.textContent.trim();
+
+      if (val === 'AC') {
+        expression = '';
+      } else if (val === '=') {
+        try {
+          const cleanExpr = expression
+            .replace(/÷/g, '/')
+            .replace(/×/g, '*')
+            .replace(/−/g, '-')
+            .replace(/,/g, '.');
+          const result = eval(cleanExpr);
+          expression = result.toString().replace('.', ',');
+        } catch {
+          expression = 'Errore';
+        }
+      } else if (val === '+⁄−') {
+        if (expression.startsWith('-')) {
+          expression = expression.slice(1);
+        } else {
+          expression = '-' + expression;
+        }
+      } else if (!btn.classList.contains('icon')) {
+        expression += val;
+      }
+
+      updateDisplay();
+    });
+  });
+
+  updateDisplay();
+</script>

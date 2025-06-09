@@ -17,10 +17,9 @@ body {
   align-items: center;
 }
 
-/* Fissa dimensioni perfette per iPhone 14 */
 .calculator {
   width: 390px; /* larghezza iPhone 14 */
-  height: 844px; /* altezza visibile iPhone 14 */
+  height: 844px; /* altezza iPhone 14 */
   display: flex;
   flex-direction: column;
   padding: 20px 15px;
@@ -42,25 +41,24 @@ body {
   user-select: none;
 }
 
-/* Layout a griglia con altezza fissa */
+/* Griglia tasti */
 .buttons {
   display: grid;
   grid-template-columns: repeat(4, 1fr);
   grid-template-rows: repeat(5, 1fr);
-  row-gap: 8px;
-  column-gap: 8px;
-  height: 100%;
+  gap: 6px; /* ridotto */
+  flex-grow: 1;
 }
 
 button {
   border: none;
   border-radius: 50%;
-  font-size: 1.8rem;
+  font-size: 1.6rem;
   font-weight: 500;
   color: white;
   background-color: #333;
+  aspect-ratio: 1 / 1; /* forma perfettamente circolare */
   width: 100%;
-  height: 65px;
   transition: background 0.2s;
 }
 
@@ -88,5 +86,6 @@ button.zero {
   border-radius: 50px;
   text-align: left;
   padding-left: 20px;
-  height: 65px;
+  aspect-ratio: unset;
+  height: 100%;
 }

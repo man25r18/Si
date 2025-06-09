@@ -46,42 +46,39 @@ body {
 .buttons {
   display: grid;
   grid-template-columns: repeat(4, 1fr);
-  gap: 12px;
+  gap: 10px;
+  width: 100%;
+  max-width: 390px;
+  margin: auto;
+  padding: 10px;
+  box-sizing: border-box;
 }
 
-button {
-  aspect-ratio: 1 / 1;
+.buttons button {
+  aspect-ratio: 1;
   border: none;
   border-radius: 50%;
-  font-size: 2rem;
-  font-weight: 400;
+  font-size: 1.8rem;
   color: white;
-  background-color: #505050;
+  font-family: -apple-system, BlinkMacSystemFont, sans-serif;
+  background-color: #333;
+  display: flex;
+  align-items: center;
+  justify-content: center;
   transition: background 0.2s;
 }
 
-button.function {
+.buttons button.gray {
   background-color: #a5a5a5;
   color: black;
 }
 
-button.operator {
-  background-color: #ff9500;
+.buttons button.orange {
+  background-color: #f1a33c;
   color: white;
 }
 
-button.equals {
-  background-color: #ff9500;
-  color: white;
-}
-
-button.icon {
-  font-size: 1.5rem;
-  color: white;
-  background-color: #505050;
-}
-
-button:active {
+.buttons button:active {
   opacity: 0.7;
 }
 

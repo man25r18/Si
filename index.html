@@ -1,147 +1,505 @@
 <!DOCTYPE html>
 <html lang="it">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
-  <meta name="apple-mobile-web-app-capable" content="yes">
-  <title>Calcolatrice finta</title>
-  <link rel="stylesheet" href="style.css">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+    <title>Calcolatrice iOS</title>
+    
+    <!-- PWA Meta Tags -->
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="apple-mobile-web-app-title" content="Calcolatrice">
+    <meta name="theme-color" content="#000000">
+    <meta name="description" content="Calcolatrice con interfaccia iOS">
+    
+    <!-- PWA Icons -->
+    <link rel="apple-touch-icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 192 192'><rect width='192' height='192' rx='42' fill='%23000'/><rect x='24' y='24' width='144' height='48' rx='8' fill='%23333'/><text x='96' y='52' text-anchor='middle' fill='white' font-size='24' font-family='system-ui'>0</text><rect x='24' y='84' width='32' height='32' rx='16' fill='%23a3a3a3'/><text x='40' y='105' text-anchor='middle' fill='black' font-size='16' font-family='system-ui'>AC</text><rect x='68' y='84' width='32' height='32' rx='16' fill='%23a3a3a3'/><text x='84' y='105' text-anchor='middle' fill='black' font-size='16' font-family='system-ui'>±</text><rect x='112' y='84' width='32' height='32' rx='16' fill='%23a3a3a3'/><text x='128' y='105' text-anchor='middle' fill='black' font-size='16' font-family='system-ui'>%</text><rect x='156' y='84' width='32' height='32' rx='16' fill='%23ff9500'/><text x='172' y='105' text-anchor='middle' fill='white' font-size='16' font-family='system-ui'>÷</text></svg>">
+    
+    <!-- Manifest -->
+    <link rel="manifest" href="/manifest.json">
+    
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    
+    <!-- React -->
+    <script crossorigin src="https://unpkg.com/react@18/umd/react.production.min.js"></script>
+    <script crossorigin src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js"></script>
+    <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+    
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', sans-serif;
+            background-color: #000;
+            overflow: hidden;
+            -webkit-user-select: none;
+            -webkit-touch-callout: none;
+            -webkit-tap-highlight-color: transparent;
+        }
+        
+        /* Nasconde la barra degli indirizzi su iOS */
+        html, body {
+            height: 100vh;
+            overflow: hidden;
+        }
+        
+        #root {
+            height: 100vh;
+            overflow: hidden;
+        }
+        
+        /* Stili per i pulsanti */
+        button {
+            -webkit-user-select: none;
+            -webkit-touch-callout: none;
+            -webkit-tap-highlight-color: transparent;
+        }
+    </style>
 </head>
-  <script>
-  const display = document.querySelector('.display');
-  const buttons = document.querySelectorAll('.buttons button');
-  let expression = '';
-
-  function updateDisplay() {
-    display.textContent = expression || '0';
-  }
-
-  buttons.forEach(btn => {
-    btn.addEventListener('click', () => {
-      const val = btn.textContent.trim();
-
-      if (val === 'AC') {
-        expression = '';
-      } else if (val === '=') {
-        try {
-          // Sostituzioni per simboli iOS
-          const cleanExpr = expression
-            .replace(/÷/g, '/')
-            .replace(/×/g, '*')
-            .replace(/−/g, '-')
-            .replace(/,/g, '.');
-          const result = eval(cleanExpr);
-          expression = result.toString().replace('.', ',');
-        } catch {
-          expression = 'Errore';
-        }
-      } else if (val === '+⁄−') {
-        if (expression) {
-          if (expression.startsWith('-')) {
-            expression = expression.substring(1);
-          } else {
-            expression = '-' + expression;
-          }
-        }
-      } else {
-        expression += val;
-      }
-
-      updateDisplay();
-    });
-  });
-
-  updateDisplay();
-</script>
 <body>
-  <div class="calculator">
-    <div class="display" id="display">0</div>
-    <div class="buttons">
-      <button class="gray">AC</button>
-      <button class="gray">+⁄−</button>
-      <button class="gray">%</button>
-      <button class="orange">÷</button>
+    <div id="root"></div>
 
-      <button class="dark">7</button>
-      <button class="dark">8</button>
-      <button class="dark">9</button>
-      <button class="orange">×</button>
+    <script type="text/babel">
+        const { useState, useEffect } = React;
+        
+        // Registrazione del Service Worker
+        if ('serviceWorker' in navigator) {
+            window.addEventListener('load', () => {
+                navigator.serviceWorker.register('/sw.js')
+                    .then((registration) => {
+                        console.log('SW registered: ', registration);
+                    })
+                    .catch((registrationError) => {
+                        console.log('SW registration failed: ', registrationError);
+                    });
+            });
+        }
 
-      <button class="dark">4</button>
-      <button class="dark">5</button>
-      <button class="dark">6</button>
-      <button class="orange">−</button>
+        const Calculator = () => {
+            const [display, setDisplay] = useState('0');
+            const [previousValue, setPreviousValue] = useState(null);
+            const [operation, setOperation] = useState(null);
+            const [waitingForOperand, setWaitingForOperand] = useState(false);
+            const [isLandscape, setIsLandscape] = useState(window.innerWidth > window.innerHeight);
+            const [secretResult, setSecretResult] = useState(null);
+            const [showSecretInput, setShowSecretInput] = useState(false);
+            const [secretInputValue, setSecretInputValue] = useState('');
 
-      <button class="dark">1</button>
-      <button class="dark">2</button>
-      <button class="dark">3</button>
-      <button class="orange">+</button>
+            useEffect(() => {
+                const handleResize = () => {
+                    setIsLandscape(window.innerWidth > window.innerHeight);
+                };
 
-      <button class="dark icon">
-        <svg viewBox="0 0 24 24" width="22" height="22" fill="white" xmlns="http://www.w3.org/2000/svg">
-          <rect x="6" y="3" width="12" height="18" rx="2" stroke="white" stroke-width="2" fill="none"/>
-          <circle cx="9" cy="8" r="1" fill="white"/>
-          <circle cx="15" cy="8" r="1" fill="white"/>
-          <circle cx="9" cy="12" r="1" fill="white"/>
-          <circle cx="15" cy="12" r="1" fill="white"/>
-          <circle cx="9" cy="16" r="1" fill="white"/>
-          <circle cx="15" cy="16" r="1" fill="white"/>
-        </svg>
-      </button>
-      <button class="dark">0</button>
-      <button class="dark">,</button>
-      <button class="orange">=</button>
-    </div>
-  </div>
+                window.addEventListener('resize', handleResize);
+                window.addEventListener('orientationchange', handleResize);
+                
+                return () => {
+                    window.removeEventListener('resize', handleResize);
+                    window.removeEventListener('orientationchange', handleResize);
+                };
+            }, []);
+
+            const handleDoubleClick = () => {
+                setShowSecretInput(true);
+            };
+
+            const setSecretResultValue = () => {
+                if (secretInputValue.trim()) {
+                    setSecretResult(secretInputValue.trim());
+                    setShowSecretInput(false);
+                    setSecretInputValue('');
+                }
+            };
+
+            const calculate = (firstOperand, secondOperand, operation) => {
+                if (secretResult !== null) {
+                    return parseFloat(secretResult);
+                }
+
+                switch (operation) {
+                    case '+':
+                        return firstOperand + secondOperand;
+                    case '-':
+                        return firstOperand - secondOperand;
+                    case '×':
+                        return firstOperand * secondOperand;
+                    case '÷':
+                        return secondOperand !== 0 ? firstOperand / secondOperand : 0;
+                    case '=':
+                        return secondOperand;
+                    default:
+                        return secondOperand;
+                }
+            };
+
+            const handleNumber = (num) => {
+                if (waitingForOperand) {
+                    setDisplay(String(num));
+                    setWaitingForOperand(false);
+                } else {
+                    setDisplay(display === '0' ? String(num) : display + num);
+                }
+            };
+
+            const handleOperator = (nextOperator) => {
+                const inputValue = parseFloat(display);
+
+                if (previousValue === null) {
+                    setPreviousValue(inputValue);
+                } else if (operation) {
+                    const currentValue = previousValue || 0;
+                    const newValue = calculate(currentValue, inputValue, operation);
+
+                    setDisplay(String(newValue));
+                    setPreviousValue(newValue);
+                }
+
+                setWaitingForOperand(true);
+                setOperation(nextOperator);
+            };
+
+            const handleEquals = () => {
+                const inputValue = parseFloat(display);
+
+                if (previousValue !== null && operation) {
+                    const newValue = calculate(previousValue, inputValue, operation);
+                    setDisplay(String(newValue));
+                    setPreviousValue(null);
+                    setOperation(null);
+                    setWaitingForOperand(true);
+                }
+            };
+
+            const handleClear = () => {
+                setDisplay('0');
+                setPreviousValue(null);
+                setOperation(null);
+                setWaitingForOperand(false);
+            };
+
+            const handlePercent = () => {
+                const value = parseFloat(display);
+                setDisplay(String(value / 100));
+            };
+
+            const handlePlusMinus = () => {
+                const value = parseFloat(display);
+                setDisplay(String(value * -1));
+            };
+
+            const handleDecimal = () => {
+                if (waitingForOperand) {
+                    setDisplay('0.');
+                    setWaitingForOperand(false);
+                } else if (display.indexOf('.') === -1) {
+                    setDisplay(display + '.');
+                }
+            };
+
+            const handleScientific = (func) => {
+                const value = parseFloat(display);
+                let result;
+
+                switch (func) {
+                    case 'sin':
+                        result = Math.sin(value);
+                        break;
+                    case 'cos':
+                        result = Math.cos(value);
+                        break;
+                    case 'tan':
+                        result = Math.tan(value);
+                        break;
+                    case 'ln':
+                        result = Math.log(value);
+                        break;
+                    case 'log':
+                        result = Math.log10(value);
+                        break;
+                    case 'x²':
+                        result = value * value;
+                        break;
+                    case 'x³':
+                        result = value * value * value;
+                        break;
+                    case 'x!':
+                        result = factorial(Math.floor(value));
+                        break;
+                    case 'sinh':
+                        result = Math.sinh(value);
+                        break;
+                    case 'cosh':
+                        result = Math.cosh(value);
+                        break;
+                    case 'tanh':
+                        result = Math.tanh(value);
+                        break;
+                    case 'eˣ':
+                        result = Math.exp(value);
+                        break;
+                    case '10ˣ':
+                        result = Math.pow(10, value);
+                        break;
+                    case '√':
+                        result = Math.sqrt(value);
+                        break;
+                    case '∛':
+                        result = Math.cbrt(value);
+                        break;
+                    case 'π':
+                        result = Math.PI;
+                        break;
+                    case 'e':
+                        result = Math.E;
+                        break;
+                    case 'Rand':
+                        result = Math.random();
+                        break;
+                    default:
+                        return;
+                }
+
+                setDisplay(String(result));
+                setWaitingForOperand(true);
+            };
+
+            const factorial = (n) => {
+                if (n <= 1) return 1;
+                return n * factorial(n - 1);
+            };
+
+            const Button = ({ onClick, className, children, span = 1 }) => (
+                React.createElement('button', {
+                    onClick: onClick,
+                    className: `${className} rounded-full font-medium text-lg transition-all duration-150 active:scale-95 ${span === 2 ? 'col-span-2' : ''}`,
+                    style: { WebkitTapHighlightColor: 'transparent' }
+                }, children)
+            );
+
+            const portraitButtons = [
+                [
+                    { text: 'AC', action: handleClear, type: 'function' },
+                    { text: '+/-', action: handlePlusMinus, type: 'function' },
+                    { text: '%', action: handlePercent, type: 'function' },
+                    { text: '÷', action: () => handleOperator('÷'), type: 'operator' }
+                ],
+                [
+                    { text: '7', action: () => handleNumber(7), type: 'number' },
+                    { text: '8', action: () => handleNumber(8), type: 'number' },
+                    { text: '9', action: () => handleNumber(9), type: 'number' },
+                    { text: '×', action: () => handleOperator('×'), type: 'operator' }
+                ],
+                [
+                    { text: '4', action: () => handleNumber(4), type: 'number' },
+                    { text: '5', action: () => handleNumber(5), type: 'number' },
+                    { text: '6', action: () => handleNumber(6), type: 'number' },
+                    { text: '-', action: () => handleOperator('-'), type: 'operator' }
+                ],
+                [
+                    { text: '1', action: () => handleNumber(1), type: 'number' },
+                    { text: '2', action: () => handleNumber(2), type: 'number' },
+                    { text: '3', action: () => handleNumber(3), type: 'number' },
+                    { text: '+', action: () => handleOperator('+'), type: 'operator' }
+                ],
+                [
+                    { text: '0', action: () => handleNumber(0), type: 'number', span: 2 },
+                    { text: '.', action: handleDecimal, type: 'number' },
+                    { text: '=', action: handleEquals, type: 'operator' }
+                ]
+            ];
+
+            const landscapeButtons = [
+                [
+                    { text: '(', action: () => {}, type: 'function' },
+                    { text: ')', action: () => {}, type: 'function' },
+                    { text: 'mc', action: () => {}, type: 'function' },
+                    { text: 'm+', action: () => {}, type: 'function' },
+                    { text: 'm-', action: () => {}, type: 'function' },
+                    { text: 'mr', action: () => {}, type: 'function' },
+                    { text: 'AC', action: handleClear, type: 'function' },
+                    { text: '+/-', action: handlePlusMinus, type: 'function' },
+                    { text: '%', action: handlePercent, type: 'function' },
+                    { text: '÷', action: () => handleOperator('÷'), type: 'operator' }
+                ],
+                [
+                    { text: '2ⁿᵈ', action: () => handleScientific('2ⁿᵈ'), type: 'function' },
+                    { text: 'x²', action: () => handleScientific('x²'), type: 'function' },
+                    { text: 'x³', action: () => handleScientific('x³'), type: 'function' },
+                    { text: 'xʸ', action: () => {}, type: 'function' },
+                    { text: 'eˣ', action: () => handleScientific('eˣ'), type: 'function' },
+                    { text: '10ˣ', action: () => handleScientific('10ˣ'), type: 'function' },
+                    { text: '7', action: () => handleNumber(7), type: 'number' },
+                    { text: '8', action: () => handleNumber(8), type: 'number' },
+                    { text: '9', action: () => handleNumber(9), type: 'number' },
+                    { text: '×', action: () => handleOperator('×'), type: 'operator' }
+                ],
+                [
+                    { text: '¹/ₓ', action: () => handleScientific('1/x'), type: 'function' },
+                    { text: '²√x', action: () => handleScientific('√'), type: 'function' },
+                    { text: '³√x', action: () => handleScientific('∛'), type: 'function' },
+                    { text: 'ʸ√x', action: () => {}, type: 'function' },
+                    { text: 'ln', action: () => handleScientific('ln'), type: 'function' },
+                    { text: 'log₁₀', action: () => handleScientific('log'), type: 'function' },
+                    { text: '4', action: () => handleNumber(4), type: 'number' },
+                    { text: '5', action: () => handleNumber(5), type: 'number' },
+                    { text: '6', action: () => handleNumber(6), type: 'number' },
+                    { text: '-', action: () => handleOperator('-'), type: 'operator' }
+                ],
+                [
+                    { text: 'x!', action: () => handleScientific('x!'), type: 'function' },
+                    { text: 'sin', action: () => handleScientific('sin'), type: 'function' },
+                    { text: 'cos', action: () => handleScientific('cos'), type: 'function' },
+                    { text: 'tan', action: () => handleScientific('tan'), type: 'function' },
+                    { text: 'e', action: () => handleScientific('e'), type: 'function' },
+                    { text: 'EE', action: () => {}, type: 'function' },
+                    { text: '1', action: () => handleNumber(1), type: 'number' },
+                    { text: '2', action: () => handleNumber(2), type: 'number' },
+                    { text: '3', action: () => handleNumber(3), type: 'number' },
+                    { text: '+', action: () => handleOperator('+'), type: 'operator' }
+                ],
+                [
+                    { text: '📊', action: () => {}, type: 'function' },
+                    { text: 'sinh', action: () => handleScientific('sinh'), type: 'function' },
+                    { text: 'cosh', action: () => handleScientific('cosh'), type: 'function' },
+                    { text: 'tanh', action: () => handleScientific('tanh'), type: 'function' },
+                    { text: 'π', action: () => handleScientific('π'), type: 'function' },
+                    { text: 'Rad', action: () => {}, type: 'function' },
+                    { text: 'Rand', action: () => handleScientific('Rand'), type: 'function' },
+                    { text: '0', action: () => handleNumber(0), type: 'number' },
+                    { text: '.', action: handleDecimal, type: 'number' },
+                    { text: '=', action: handleEquals, type: 'operator' }
+                ]
+            ];
+
+            const getButtonStyle = (type) => {
+                switch (type) {
+                    case 'operator':
+                        return 'bg-orange-500 hover:bg-orange-400 text-white h-16';
+                    case 'function':
+                        return 'bg-gray-400 hover:bg-gray-300 text-black h-16';
+                    case 'number':
+                        return 'bg-gray-700 hover:bg-gray-600 text-white h-16';
+                    default:
+                        return 'bg-gray-700 hover:bg-gray-600 text-white h-16';
+                }
+            };
+
+            if (showSecretInput) {
+                return React.createElement('div', {
+                    className: "min-h-screen bg-black flex items-center justify-center p-4"
+                }, 
+                    React.createElement('div', {
+                        className: "bg-gray-800 p-6 rounded-lg max-w-sm w-full"
+                    },
+                        React.createElement('h3', {
+                            className: "text-white text-lg mb-4"
+                        }, "Imposta risultato segreto:"),
+                        React.createElement('input', {
+                            type: "text",
+                            value: secretInputValue,
+                            onChange: (e) => setSecretInputValue(e.target.value),
+                            className: "w-full p-2 rounded bg-gray-700 text-white mb-4",
+                            placeholder: "Inserisci il risultato...",
+                            autoFocus: true
+                        }),
+                        React.createElement('div', {
+                            className: "flex gap-2"
+                        },
+                            React.createElement('button', {
+                                onClick: setSecretResultValue,
+                                className: "flex-1 bg-orange-500 text-white p-2 rounded hover:bg-orange-400"
+                            }, "Imposta"),
+                            React.createElement('button', {
+                                onClick: () => setShowSecretInput(false),
+                                className: "flex-1 bg-gray-600 text-white p-2 rounded hover:bg-gray-500"
+                            }, "Annulla")
+                        ),
+                        secretResult && React.createElement('p', {
+                            className: "text-green-400 text-sm mt-2"
+                        }, `Risultato attuale: ${secretResult}`)
+                    )
+                );
+            }
+
+            return React.createElement('div', {
+                className: "min-h-screen bg-black flex flex-col"
+            },
+                React.createElement('div', {
+                    className: "flex-1 flex items-end justify-end p-6",
+                    onDoubleClick: handleDoubleClick
+                },
+                    React.createElement('div', {
+                        className: "text-white text-right"
+                    },
+                        React.createElement('div', {
+                            className: `${isLandscape ? 'text-4xl' : 'text-6xl'} font-light`
+                        }, display),
+                        secretResult && React.createElement('div', {
+                            className: "text-xs text-green-400 mt-1 opacity-50"
+                        }, "Modalità segreta attiva")
+                    )
+                ),
+                React.createElement('div', {
+                    className: "p-4"
+                },
+                    isLandscape ? 
+                        React.createElement('div', {
+                            className: "grid grid-cols-10 gap-3"
+                        },
+                            landscapeButtons.flat().map((button, index) =>
+                                React.createElement(Button, {
+                                    key: index,
+                                    onClick: button.action,
+                                    className: getButtonStyle(button.type),
+                                    span: button.span
+                                }, button.text)
+                            )
+                        ) :
+                        React.createElement('div', {
+                            className: "grid grid-cols-4 gap-3"
+                        },
+                            portraitButtons.flat().map((button, index) =>
+                                React.createElement(Button, {
+                                    key: index,
+                                    onClick: button.action,
+                                    className: getButtonStyle(button.type),
+                                    span: button.span
+                                }, button.text)
+                            )
+                        )
+                )
+            );
+        };
+
+        ReactDOM.render(React.createElement(Calculator), document.getElementById('root'));
+    </script>
+
+    <!-- Service Worker Registration -->
+    <script>
+        // Nasconde la barra degli indirizzi su iOS
+        window.addEventListener('load', () => {
+            setTimeout(() => {
+                window.scrollTo(0, 1);
+            }, 0);
+        });
+        
+        // Previene il refresh quando si fa swipe down
+        document.addEventListener('touchmove', function(e) {
+            if (e.touches.length > 1) {
+                e.preventDefault();
+            }
+        }, { passive: false });
+        
+        // Previene il zoom con doppio tap
+        let lastTouchEnd = 0;
+        document.addEventListener('touchend', function (event) {
+            const now = (new Date()).getTime();
+            if (now - lastTouchEnd <= 300) {
+                event.preventDefault();
+            }
+            lastTouchEnd = now;
+        }, false);
+    </script>
 </body>
-  <script>
-  const display = document.getElementById('display');
-  const buttons = document.querySelectorAll('.buttons button');
-  let expression = '';
-
-  function updateDisplay() {
-    display.textContent = expression || '0';
-
-    // Adatta dinamicamente la dimensione del font in base alla lunghezza
-    const length = display.textContent.length;
-    if (length > 10) {
-      display.style.fontSize = '10vw';
-    } else {
-      display.style.fontSize = '15vw';
-    }
-  }
-
-  buttons.forEach(btn => {
-    btn.addEventListener('click', () => {
-      const val = btn.textContent.trim();
-
-      if (val === 'AC') {
-        expression = '';
-      } else if (val === '=') {
-        try {
-          const cleanExpr = expression
-            .replace(/÷/g, '/')
-            .replace(/×/g, '*')
-            .replace(/−/g, '-')
-            .replace(/,/g, '.');
-          const result = eval(cleanExpr);
-          expression = result.toString().replace('.', ',');
-        } catch {
-          expression = 'Errore';
-        }
-      } else if (val === '+⁄−') {
-        if (expression.startsWith('-')) {
-          expression = expression.slice(1);
-        } else {
-          expression = '-' + expression;
-        }
-      } else if (!btn.classList.contains('icon')) {
-        expression += val;
-      }
-
-      updateDisplay();
-    });
-  });
-
-  updateDisplay();
-</script>
+</html>

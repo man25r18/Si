@@ -12,79 +12,70 @@ html, body {
 }
 
 body {
-  background-color: black;
-  height: 100vh;
-  width: 100vw;
   margin: 0;
-  padding: 0;
+  background-color: black;
   display: flex;
   justify-content: center;
-  align-items: flex-end;
-  -webkit-touch-callout: none;
+  align-items: center;
+  height: 100vh;
   -webkit-user-select: none;
   user-select: none;
 }
 
 .calculator {
-  width: 100%;
-  max-width: 430px;
-  padding: 20px 10px;
-  display: flex;
-  flex-direction: column;
-  gap: 10px;
-}
-
-.display {
-  color: white;
-  font-size: 5rem;
-  text-align: right;
-  padding-right: 20px;
-  height: 100px;
-  line-height: 100px;
-}
-
-.buttons {
-  display: grid;
-  grid-template-columns: repeat(4, 1fr);
-  gap: 10px;
-  width: 100%;
-  max-width: 390px;
-  margin: auto;
-  padding: 10px;
+  width: 100vw;
+  max-width: 100%;
+  padding: 2vw;
   box-sizing: border-box;
 }
 
-.buttons button {
-  aspect-ratio: 1;
-  border: none;
-  border-radius: 50%;
-  font-size: 1.8rem;
+.display {
+  height: 20vw;
   color: white;
-  font-family: -apple-system, BlinkMacSystemFont, sans-serif;
+  text-align: right;
+  font-size: 15vw;
+  padding: 0 2vw;
+  overflow-x: auto;
+  white-space: nowrap;
+  box-sizing: border-box;
+  font-family: monospace;
+}
+
+.buttons {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+}
+
+button {
+  width: 20vw;
+  height: 20vw;
+  border-radius: 50%;
+  margin: 1vw;
+  font-size: 7vw;
+  border: none;
+  color: white;
   background-color: #333;
   display: flex;
   align-items: center;
   justify-content: center;
-  transition: background 0.2s;
 }
 
-.buttons button.gray {
+button.gray {
   background-color: #a5a5a5;
-  color: black;
+  color: white;
 }
 
-.buttons button.orange {
+button.orange {
   background-color: #f1a33c;
   color: white;
 }
 
-.buttons button:active {
-  opacity: 0.7;
+button.dark {
+  background-color: #333333;
 }
 
-@media (display-mode: standalone) {
-  body {
-    height: 100vh;
-    overflow: hidden;
-  }
+button.icon svg {
+  width: 60%;
+  height: 60%;
 }

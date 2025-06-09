@@ -7,6 +7,52 @@
   <title>Calcolatrice finta</title>
   <link rel="stylesheet" href="style.css">
 </head>
+  <script>
+  const display = document.querySelector('.display');
+  const buttons = document.querySelectorAll('.buttons button');
+  let expression = '';
+
+  function updateDisplay() {
+    display.textContent = expression || '0';
+  }
+
+  buttons.forEach(btn => {
+    btn.addEventListener('click', () => {
+      const val = btn.textContent.trim();
+
+      if (val === 'AC') {
+        expression = '';
+      } else if (val === '=') {
+        try {
+          // Sostituzioni per simboli iOS
+          const cleanExpr = expression
+            .replace(/÷/g, '/')
+            .replace(/×/g, '*')
+            .replace(/−/g, '-')
+            .replace(/,/g, '.');
+          const result = eval(cleanExpr);
+          expression = result.toString().replace('.', ',');
+        } catch {
+          expression = 'Errore';
+        }
+      } else if (val === '+⁄−') {
+        if (expression) {
+          if (expression.startsWith('-')) {
+            expression = expression.substring(1);
+          } else {
+            expression = '-' + expression;
+          }
+        }
+      } else {
+        expression += val;
+      }
+
+      updateDisplay();
+    });
+  });
+
+  updateDisplay();
+</script>
 <body>
   <div class="calculator">
     <div class="display">0</div>

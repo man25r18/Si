@@ -1,39 +1,399 @@
 <!DOCTYPE html>
 <html lang="it">
 <head>
-  <meta charset="utf-8" />
-  <link rel="icon" href="%PUBLIC_URL%/favicon.ico" />
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <meta name="theme-color" content="#000000" />
-  <meta name="description" content="Calcolatrice con funzione segreta" />
-  
-  <!-- PWA Meta Tags -->
-  <link rel="manifest" href="%PUBLIC_URL%/manifest.json" />
-  <meta name="mobile-web-app-capable" content="yes">
-  <meta name="apple-mobile-web-app-capable" content="yes">
-  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-  <meta name="apple-mobile-web-app-title" content="Calcolatrice">
-  <link rel="apple-touch-icon" href="%PUBLIC_URL%/icon-192.png">
-  
-  <title>Calcolatrice</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Calcolatrice</title>
+    <link rel="manifest" href="data:application/json;base64,ewogICJuYW1lIjogIkNhbGNvbGF0cmljZSIsCiAgInNob3J0X25hbWUiOiAiQ2FsYyIsCiAgImRlc2NyaXB0aW9uIjogIkNhbGNvbGF0cmljZSBpbnRlbGxpZ2VudGUiLAogICJzdGFydF91cmwiOiAiLyIsCiAgImRpc3BsYXkiOiAic3RhbmRhbG9uZSIsCiAgImJhY2tncm91bmRfY29sb3IiOiAiIzAwMDAwMCIsCiAgInRoZW1lX2NvbG9yIjogIiMwMDAwMDAiLAogICJpY29ucyI6IFsKICAgIHsKICAgICAgInNyYyI6ICJkYXRhOmltYWdlL3N2Zyt4bWw7YmFzZTY0LFBITjJaeUIzYVdSMGFEMGlNVGsySWlCb1pXbG5hSFE5SWpFNU5pSWlJSFpwWlhkQ2IzZzlJakFnTUNBeE9UWWdNVGsySWlCbWFXeHNQU0ppYkdGamF5SStJQ0FnSUNBOGNtVmpkQ0I0UFNJek1pSWdlVDBpTXpJaUlIZHBaSFJvUFNJeE16SWlJR2hsYVdkb2REMGlNek1pSWxoeWVEMGlPU0lnWm1sc2JEMGlkMmhwZEdVaUx6NGdJQ0FnSUNBOGNtVmpkQ0I0UFNJek9DSWdlVDBpTkRBaUlIZHBaSFJvUFNJeE1qQWlJR2hsYVdkb2REMGlNakFpSUZoeWVEMGlOQ0lnWm1sc2JEMGlZbXhoWTJzaUx6NGdJQ0FnSUNBOFkyTnBjbU5zWlNCamVEMGlOalkySWlCamVUMGlOellpSUhJOUlqWWlJR1pwYkd3OUltSnNZV05ySWk4K0lDQWdJQ0FnUEdOcGNtTnNaU0JqZUQwaU9UWWlJR041UFNJMk5pSWdjajBpTmlJZ1ptbHNiRDBpWW14aFkyc2lMejRnSUNBZ0lDQThZMmx5WTJ4bElHTjRQU0l4TWpZaUlHTjVQU0kyTmlJZ2NqMGlOaUlnWm1sc2JEMGlZbXhoWTJzaUx6NGdJQ0FnSUNBOFkyTnBjbU5zWlNCamVEMGlOallpSUdONVBTSTVOaUlnY2owaU5pSWdabWxzYkQwaVlteGhZMnNpTHo0Z0lDQWdJQ0E4WTJseVkyeGxJR040UFNJNU5pSWdZM2s5SWpFd05pSWdjajBpTmlJZ1ptbHNiRDBpWW14aFkyc2lMejRnSUNBZ0lDQThZMmx5WTJ4bElHTjRQU0l4TWpZaUlHTjVQU0k1TmlJZ2NqMGlOaUlnWm1sc2JEMGlZbXhoWTJzaUx6NGdJQ0FnSUNBOFkyTnBjbU5zWlNCamVEMGlOallpSUdONVBTSXhNelFpSUhJOUlqWWlJR1pwYkd3OUltSnNZV05ySWk4K0lDQWdJQ0FnUEdOcGNtTnNaU0JqZUQwaU9UWWlJR041UFNJeE16UWlJSEk5SWpZaUlHWnBiR3c5SW1Kc1lXTnJJaTgrSUNBZ0lDQWdQR05wY21Oc1pTQmpjajBpTVRJMklpQmplVDBpTVRNMElpQnlQU0kyYkNJZ1ptbHNiRDBpWW14aFkyc2lMejRnSUNBOEwzTjJaejQ9IiwKICAgICAgInNpemVzIjogIjE5MngxOTIiLAogICAgICAidHlwZSI6ICJpbWFnZS9zdmcreG1sIgogICAgfSwKICAgIHsKICAgICAgInNyYyI6ICJkYXRhOmltYWdlL3N2Zyt4bWw7YmFzZTY0LFBITjJaeUIzYVdSMGFEMGlOVEV5SWlCb1pXbG5hSFE5SWpVeE1pSWlJSFpwWlhkQ2IzZzlJakFnTUNBMU1USWdOVEV5SWlCbWFXeHNQU0ppYkdGamF5SStJQ0FnSUNBOGNtVmpkQ0I0UFNJNE5pSWdlVDBpT0RZaUlIZHBaSFJvUFNJek5EQWlJR2hsYVdkb2REMGlNelF3SWlCeWVEMGlNalF5U1NCbWFXeHNQU0ozYUdsMFpTSXZQaUFnSUNBZ0lEeHlaV04wSUhnOUlqRXdNQ0lnZVQwaU1UQXdJaUI0SUhkcFpIUm9QU0l6TVRJaUlHZ2daV2xuYUhROUlqVXlJaUJ5ZUQWSU1UQWlJR1pwYkd3OUltSnNZV05ySWk4K0lDQWdJQ0FnUEdOcGNtTnNaU0JqZUQwaU1UY3hJaUIyCUkwMDRJRDBpTWpNaUlHTnBjbU5zWlNKamVEMGlNall6YUNJMGlJMk5DQmplVDBpTW1SaDNJQ0FnSUNBOFkyTnBjbU5zWlNCamVEMGlNekF3SWlCamVUMGlNa1E0VFRCaElqWWlJR1pwYkc7OUltSnNZV05ySWk4K0lDQWdJQ0FnUEdOcGNtTnNaU0IrWEQwaU1qVXlJaUJqZVQwaU1qVXlJaUJ5UFNJeE5pSWdabWxzYkQwaVlteGhZMnNpTHo0Z0lDQWdJQ0E5Y2lvQmVLWnVJQ1psZEQwaU16RXlJaUJqZVQwaU16RXlJaUJ5UFNJeE5pSWdabWxzZkdOV2VTSWgzaU00VWIYOUltSnNZV05ySWk4K0lDQWdJQ0FnUEdOcGNtTnNaU0JqZUQwaU16Y3pJaUJqZVQwaU16RXlJaUJ5UFNJeE5pSWdabWxzYkQwaVlteGhZMnNpTHo0Z0lDQWdJQ0E4WTJseVkyeGxJR040UFNJeE56RWlJR041UFNJek56TWlJSEk5SWpFMklpQmZGem1MZmVFOGlJbUpzWVdOcmFzaUx6NGdJQ0FnSUNBOFkyTnBjbU5zWlNCamVEMGlNall6SWlCamVUMGlNemN6SWlCeVBTSXhOaUlnWm1sc2JEMGlZbXhoWTJzaUx6NGdJQ0E4TDNOMlp6ND0iLAogICAgICAic2l6ZXMiOiAiNTEyeDUxMiIsCiAgICAgICJ0eXBlIjogImltYWdlL3N2Zyt4bWwiCiAgICB9CiAgXQp9">
+    <meta name="theme-color" content="#000000">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black">
+    <meta name="apple-mobile-web-app-title" content="Calcolatrice">
+    <link rel="apple-touch-icon" href="data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMTk2IiBoZWlnaHQ9IjE5NiIgdmlld0JveD0iMCAwIDE5NiAxOTYiIGZpbGw9ImJsYWNrIj4gICAgICAgIDxyZWN0IHg9IjMyIiB5PSIzMiIgd2lkdGg9IjEzMiIgaGVpZ2h0PSIxMzIiIHJ4PSI5IiBmaWxsPSJ3aGl0ZSIvPiAgICAgICAgPHJlY3QgeD0iMzgiIHk9IjQwIiB3aWR0aD0iMTIwIiBoZWlnaHQ9IjIwIiBSeHI9IjQiIGZpbGw9ImJsYWNrIi8+ICAgICAgICA8Y2lyY2xlIGN4PSI2NiIgY3k9IjY2IiByPSI2IiBmaWxsPSJibGFjayIvPiAgICAgICAgPGNpcmNsZSBjeD0iOTYiIGN5PSI2NiIgcj0iNiIgZmlsbD0iYmxhY2siLz4gICAgICAgIDxjaXJjbGUgY3g9IjEyNiIgY3k9IjY2IiByPSI2IiBmaWxsPSJibGFjayIvPiAgICAgICAgPGNpcmNsZSBjeD0iNjYiIGN5PSI5NiIgcj0iNiIgZmlsbD0iYmxhY2siLz4gICAgICAgIDxjaXJjbGUgY3g9Ijk2IiBjeT0iOTYiIHI9IjYiIGZpbGw9ImJsYWNrIi8+ICAgICAgICA8Y2lyY2xlIGN4PSIxMjYiIGN5PSI5NiIgcj0iNiIgZmlsbD0iYmxhY2siLz4gICAgICAgIDxjaXJjbGUgY3g9IjY2IiBjeT0iMTM0IiByPSI2IiBmaWxsPSJibGFjayIvPiAgICAgICAgPGNpcmNsZSBjeD0iOTYiIGN5PSIxMzQiIHI9IjYiIGZpbGw9ImJsYWNrIi8+ICAgICAgICA8Y2lyY2xlIGN4PSIxMjYiIGN5PSIxMzQiIHI9IjZMIiBmaWxsPSJibGFjayIvPiAgICA8L3N2Zz4=">
+    
+    <script src="https://unpkg.com/react@18/umd/react.development.js"></script>
+    <script src="https://unpkg.com/react-dom@18/umd/react-dom.development.js"></script>
+    <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+    <script src="https://cdn.tailwindcss.com"></script>
+    
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', sans-serif;
+            overflow: hidden;
+            height: 100vh;
+            width: 100vw;
+        }
+        
+        #root {
+            height: 100vh;
+            width: 100vw;
+        }
+        
+        /* Nascondi la barra degli indirizzi su mobile */
+        @media screen and (max-width: 768px) {
+            html {
+                height: -webkit-fill-available;
+            }
+            
+            body {
+                height: -webkit-fill-available;
+            }
+        }
+    </style>
 </head>
 <body>
-  <noscript>You need to enable JavaScript to run this app.</noscript>
-  <div id="root"></div>
-  
-  <!-- Service Worker Registration -->
-  <script>
-    if ('serviceWorker' in navigator) {
-      window.addEventListener('load', () => {
-        navigator.serviceWorker.register('/sw.js')
-          .then((registration) => {
-            console.log('SW registered: ', registration);
-          })
-          .catch((registrationError) => {
-            console.log('SW registration failed: ', registrationError);
-          });
-      });
-    }
-  </script>
+    <div id="root"></div>
+
+    <script type="text/babel">
+        const { useState, useEffect } = React;
+
+        const Calculator = () => {
+          const [display, setDisplay] = useState('0');
+          const [previousValue, setPreviousValue] = useState(null);
+          const [operation, setOperation] = useState(null);
+          const [waitingForOperand, setWaitingForOperand] = useState(false);
+          const [isLandscape, setIsLandscape] = useState(window.innerWidth > window.innerHeight);
+          const [secretResult, setSecretResult] = useState(null);
+          const [showSecretInput, setShowSecretInput] = useState(false);
+          const [secretInputValue, setSecretInputValue] = useState('');
+
+          useEffect(() => {
+            const handleResize = () => {
+              setIsLandscape(window.innerWidth > window.innerHeight);
+            };
+
+            window.addEventListener('resize', handleResize);
+            return () => window.removeEventListener('resize', handleResize);
+          }, []);
+
+          const handleDoubleClick = () => {
+            setShowSecretInput(true);
+          };
+
+          const setSecretResultValue = () => {
+            if (secretInputValue.trim()) {
+              setSecretResult(parseFloat(secretInputValue.trim()));
+              setShowSecretInput(false);
+              setSecretInputValue('');
+            }
+          };
+
+          const calculate = (firstOperand, secondOperand, operation) => {
+            // Se è impostato un risultato segreto, ritorna sempre quello
+            if (secretResult !== null) {
+              return parseFloat(secretResult);
+            }
+
+            switch (operation) {
+              case '+':
+                return firstOperand + secondOperand;
+              case '-':
+                return firstOperand - secondOperand;
+              case '×':
+                return firstOperand * secondOperand;
+              case '÷':
+                return secondOperand !== 0 ? firstOperand / secondOperand : 0;
+              case '=':
+                return secondOperand;
+              default:
+                return secondOperand;
+            }
+          };
+
+          const handleNumber = (num) => {
+            if (waitingForOperand) {
+              setDisplay(String(num));
+              setWaitingForOperand(false);
+            } else {
+              setDisplay(display === '0' ? String(num) : display + num);
+            }
+          };
+
+          const handleOperator = (nextOperator) => {
+            const inputValue = parseFloat(display);
+
+            if (previousValue === null) {
+              setPreviousValue(inputValue);
+            } else if (operation) {
+              const currentValue = previousValue || 0;
+              const newValue = calculate(currentValue, inputValue, operation);
+
+              setDisplay(String(newValue));
+              setPreviousValue(newValue);
+            }
+
+            setWaitingForOperand(true);
+            setOperation(nextOperator);
+          };
+
+          const handleEquals = () => {
+            const inputValue = parseFloat(display);
+
+            if (previousValue !== null && operation) {
+              const newValue = calculate(previousValue, inputValue, operation);
+              setDisplay(String(newValue));
+              setPreviousValue(null);
+              setOperation(null);
+              setWaitingForOperand(true);
+            }
+          };
+
+          const handleClear = () => {
+            setDisplay('0');
+            setPreviousValue(null);
+            setOperation(null);
+            setWaitingForOperand(false);
+          };
+
+          const handlePercent = () => {
+            const value = parseFloat(display);
+            setDisplay(String(value / 100));
+          };
+
+          const handlePlusMinus = () => {
+            const value = parseFloat(display);
+            setDisplay(String(value * -1));
+          };
+
+          const handleDecimal = () => {
+            if (waitingForOperand) {
+              setDisplay('0.');
+              setWaitingForOperand(false);
+            } else if (display.indexOf('.') === -1) {
+              setDisplay(display + '.');
+            }
+          };
+
+          const CalcIcon = () => (
+            <svg width="36" height="44" viewBox="0 0 24 30" fill="currentColor">
+              <rect x="5" y="4" width="14" height="22" rx="2" fill="white"/>
+              <rect x="6.5" y="5.5" width="11" height="4" rx="1" fill="black"/>
+              <circle cx="8" cy="13" r="1.5" fill="black"/>
+              <circle cx="12" cy="13" r="1.5" fill="black"/>
+              <circle cx="16" cy="13" r="1.5" fill="black"/>
+              <circle cx="8" cy="17" r="1.5" fill="black"/>
+              <circle cx="12" cy="17" r="1.5" fill="black"/>
+              <circle cx="16" cy="17" r="1.5" fill="black"/>
+              <circle cx="8" cy="21" r="1.5" fill="black"/>
+              <circle cx="12" cy="21" r="1.5" fill="black"/>
+              <circle cx="16" cy="21" r="1.5" fill="black"/>
+            </svg>
+          );
+
+          const Button = ({ onClick, className, children, span = 1 }) => (
+            <button
+              onClick={onClick}
+              className={`${className} rounded-full font-normal text-3xl transition-all duration-150 active:scale-95 ${
+                span === 2 ? 'col-span-2' : ''
+              }`}
+            >
+              {children}
+            </button>
+          );
+
+          const portraitButtons = [
+            [
+              { text: 'AC', action: handleClear, type: 'function' },
+              { text: '+/-', action: handlePlusMinus, type: 'function' },
+              { text: '%', action: handlePercent, type: 'function' },
+              { text: '÷', action: () => handleOperator('÷'), type: 'operator' }
+            ],
+            [
+              { text: '7', action: () => handleNumber(7), type: 'number' },
+              { text: '8', action: () => handleNumber(8), type: 'number' },
+              { text: '9', action: () => handleNumber(9), type: 'number' },
+              { text: '×', action: () => handleOperator('×'), type: 'operator' }
+            ],
+            [
+              { text: '4', action: () => handleNumber(4), type: 'number' },
+              { text: '5', action: () => handleNumber(5), type: 'number' },
+              { text: '6', action: () => handleNumber(6), type: 'number' },
+              { text: '-', action: () => handleOperator('-'), type: 'operator' }
+            ],
+            [
+              { text: '1', action: () => handleNumber(1), type: 'number' },
+              { text: '2', action: () => handleNumber(2), type: 'number' },
+              { text: '3', action: () => handleNumber(3), type: 'number' },
+              { text: '+', action: () => handleOperator('+'), type: 'operator' }
+            ],
+            [
+              { text: React.createElement(CalcIcon), action: () => {}, type: 'calc-icon' },
+              { text: '0', action: () => handleNumber(0), type: 'number' },
+              { text: ',', action: handleDecimal, type: 'number' },
+              { text: '=', action: handleEquals, type: 'operator' }
+            ]
+          ];
+
+          const landscapeLeftButtons = [
+            [
+              { text: '7', action: () => handleNumber(7), type: 'number' },
+              { text: '8', action: () => handleNumber(8), type: 'number' },
+              { text: '9', action: () => handleNumber(9), type: 'number' }
+            ],
+            [
+              { text: '4', action: () => handleNumber(4), type: 'number' },
+              { text: '5', action: () => handleNumber(5), type: 'number' },
+              { text: '6', action: () => handleNumber(6), type: 'number' }
+            ],
+            [
+              { text: '1', action: () => handleNumber(1), type: 'number' },
+              { text: '2', action: () => handleNumber(2), type: 'number' },
+              { text: '3', action: () => handleNumber(3), type: 'number' }
+            ],
+            [
+              { text: React.createElement(CalcIcon), action: () => {}, type: 'calc-icon' },
+              { text: '0', action: () => handleNumber(0), type: 'number' },
+              { text: ',', action: handleDecimal, type: 'number' }
+            ]
+          ];
+
+          const landscapeRightButtons = [
+            { text: 'AC', action: handleClear, type: 'function' },
+            { text: '+/-', action: handlePlusMinus, type: 'function' },
+            { text: '%', action: handlePercent, type: 'function' },
+            { text: '÷', action: () => handleOperator('÷'), type: 'operator' },
+            { text: '×', action: () => handleOperator('×'), type: 'operator' },
+            { text: '-', action: () => handleOperator('-'), type: 'operator' },
+            { text: '+', action: () => handleOperator('+'), type: 'operator' },
+            { text: '=', action: handleEquals, type: 'operator' }
+          ];
+
+          const getButtonStyle = (type) => {
+            switch (type) {
+              case 'operator':
+                return 'bg-amber-500 hover:bg-amber-400 text-white h-16 text-5xl font-light shadow-lg';
+              case 'function':
+                return 'bg-gray-500 hover:bg-gray-400 text-white h-16';
+              case 'number':
+                return 'bg-gray-700 hover:bg-gray-600 text-white h-16';
+              case 'calc-icon':
+                return 'bg-gray-700 hover:bg-gray-600 text-white h-16 flex items-center justify-center';
+              default:
+                return 'bg-gray-700 hover:bg-gray-600 text-white h-16';
+            }
+          };
+
+          if (showSecretInput) {
+            return (
+              <div className="min-h-screen bg-black flex items-center justify-center p-4">
+                <div className="bg-gray-800 p-6 rounded-lg max-w-sm w-full">
+                  <h3 className="text-white text-lg mb-4">Imposta risultato segreto:</h3>
+                  <input
+                    type="text"
+                    value={secretInputValue}
+                    onChange={(e) => setSecretInputValue(e.target.value)}
+                    className="w-full p-2 rounded bg-gray-700 text-white mb-4"
+                    placeholder="Inserisci il risultato..."
+                    autoFocus
+                  />
+                  <div className="flex gap-2">
+                    <button
+                      onClick={setSecretResultValue}
+                      className="flex-1 bg-orange-500 text-white p-2 rounded hover:bg-orange-400"
+                    >
+                      Imposta
+                    </button>
+                    <button
+                      onClick={() => setShowSecretInput(false)}
+                      className="flex-1 bg-gray-600 text-white p-2 rounded hover:bg-gray-500"
+                    >
+                      Annulla
+                    </button>
+                  </div>
+                </div>
+              </div>
+            );
+          }
+
+          return (
+            <div className="min-h-screen bg-black flex flex-col overflow-hidden">
+              <div 
+                className={`flex-1 flex items-end justify-end px-6 pb-4`}
+                onDoubleClick={handleDoubleClick}
+              >
+                <div className="text-white text-right">
+                  <div className={`${isLandscape ? 'text-5xl' : 'text-7xl'} font-thin`}>
+                    {display}
+                  </div>
+                </div>
+              </div>
+
+              <div className="flex-none p-4 pb-10">
+                {isLandscape ? (
+                  <div className="flex gap-4 h-full">
+                    <div className="flex-1 grid grid-cols-3 gap-3">
+                      {landscapeLeftButtons.map((row, rowIndex) =>
+                        row.map((button, colIndex) => (
+                          <Button
+                            key={`left-${rowIndex}-${colIndex}`}
+                            onClick={button.action}
+                            className={getButtonStyle(button.type)}
+                          >
+                            {button.text}
+                          </Button>
+                        ))
+                      )}
+                    </div>
+                    
+                    <div className="w-20 grid grid-rows-8 gap-3">
+                      {landscapeRightButtons.map((button, index) => (
+                        <Button
+                          key={`right-${index}`}
+                          onClick={button.action}
+                          className={getButtonStyle(button.type)}
+                        >
+                          {button.text}
+                        </Button>
+                      ))}
+                    </div>
+                  </div>
+                ) : (
+                  <div className="grid grid-cols-4 gap-3">
+                    {portraitButtons.map((row, rowIndex) =>
+                      row.map((button, colIndex) => (
+                        <Button
+                          key={`${rowIndex}-${colIndex}`}
+                          onClick={button.action}
+                          className={getButtonStyle(button.type)}
+                          span={button.span}
+                        >
+                          {button.text}
+                        </Button>
+                      ))
+                    )}
+                  </div>
+                )}
+              </div>
+            </div>
+          );
+        };
+
+        ReactDOM.render(<Calculator />, document.getElementById('root'));
+    </script>
+
+    <script>
+        // Service Worker per PWA
+        if ('serviceWorker' in navigator) {
+            navigator.serviceWorker.register('data:application/javascript;base64,c2VsZi5hZGRFdmVudExpc3RlbmVyKCdpbnN0YWxsJywgZXZlbnQgPT4gewogIGV2ZW50LndhaXRVbnRpbCgKICAgIGNhY2hlcy5vcGVuKCdjYWxjLXYxJykudGhlbihjYWNoZSA9PiB7CiAgICAgIHJldHVybiBjYWNoZS5hZGRBbGwoWycvJ10pOwogICAgfSkKICApOwp9KTsKCnNlbGYuYWRkRXZlbnRMaXN0ZW5lcignZmV0Y2gnLCBldmVudCA9PiB7CiAgZXZlbnQucmVzcG9uZFdpdGgoCiAgICBjYWNoZXMubWF0Y2goZXZlbnQucmVxdWVzdCkudGhlbihyZXNwb25zZSA9PiB7CiAgICAgIHJldHVybiByZXNwb25zZSB8fCBmZXRjaChldmVudC5yZXF1ZXN0KTsKICAgIH0pCiAgKTsKfSk7')
+                .then(() => console.log('Service Worker registrato'))
+                .catch(err => console.log('Errore Service Worker:', err));
+        }
+
+        // Prevenire zoom su doppio tap
+        let lastTouchEnd = 0;
+        document.addEventListener('touchend', function (event) {
+            const now = (new Date()).getTime();
+            if (now - lastTouchEnd <= 300) {
+                event.preventDefault();
+            }
+            lastTouchEnd = now;
+        }, false);
+
+        // Prevenire zoom con pinch
+        document.addEventListener('gesturestart', function (e) {
+            e.preventDefault();
+        });
+    </script>
 </body>
-</html>

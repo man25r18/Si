@@ -1,366 +1,39 @@
 <!DOCTYPE html>
 <html lang="it">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Calcolatrice</title>
-    <link rel="manifest" href="manifest.json">
-    <meta name="theme-color" content="#000000">
-    <link rel="apple-touch-icon" href="icon-192.png">
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/react/18.2.0/umd/react.production.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/react-dom/18.2.0/umd/react-dom.production.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/babel-standalone/7.22.5/babel.min.js"></script>
-    <script src="https://cdn.tailwindcss.com"></script>
-    <style>
-        body {
-            margin: 0;
-            padding: 0;
-            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
-            overflow: hidden;
-            user-select: none;
-            -webkit-user-select: none;
-            -webkit-touch-callout: none;
-        }
-        
-        /* Impedisce il zoom su doppio tap */
-        * {
-            touch-action: manipulation;
-        }
-        
-        /* Nasconde la barra degli indirizzi su mobile */
-        html, body {
-            height: 100vh;
-            height: 100dvh;
-        }
-    </style>
+  <meta charset="utf-8" />
+  <link rel="icon" href="%PUBLIC_URL%/favicon.ico" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="theme-color" content="#000000" />
+  <meta name="description" content="Calcolatrice con funzione segreta" />
+  
+  <!-- PWA Meta Tags -->
+  <link rel="manifest" href="%PUBLIC_URL%/manifest.json" />
+  <meta name="mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <meta name="apple-mobile-web-app-title" content="Calcolatrice">
+  <link rel="apple-touch-icon" href="%PUBLIC_URL%/icon-192.png">
+  
+  <title>Calcolatrice</title>
 </head>
 <body>
-    <div id="root"></div>
-
-    <script type="text/babel">
-        const { useState, useEffect } = React;
-
-        const Calculator = () => {
-            const [display, setDisplay] = useState('0');
-            const [previousValue, setPreviousValue] = useState(null);
-            const [operation, setOperation] = useState(null);
-            const [waitingForOperand, setWaitingForOperand] = useState(false);
-            const [isLandscape, setIsLandscape] = useState(window.innerWidth > window.innerHeight);
-            const [secretResult, setSecretResult] = useState(null);
-            const [showSecretInput, setShowSecretInput] = useState(false);
-            const [secretInputValue, setSecretInputValue] = useState('');
-
-            useEffect(() => {
-                const handleResize = () => {
-                    setIsLandscape(window.innerWidth > window.innerHeight);
-                };
-
-                window.addEventListener('resize', handleResize);
-                return () => window.removeEventListener('resize', handleResize);
-            }, []);
-
-            // Registra il Service Worker
-            useEffect(() => {
-                if ('serviceWorker' in navigator) {
-                    navigator.serviceWorker.register('sw.js')
-                        .then(registration => console.log('SW registrato'))
-                        .catch(error => console.log('SW fallito'));
-                }
-            }, []);
-
-            const handleDoubleClick = () => {
-                setShowSecretInput(true);
-            };
-
-            const setSecretResultValue = () => {
-                if (secretInputValue.trim()) {
-                    setSecretResult(secretInputValue.trim());
-                    setShowSecretInput(false);
-                    setSecretInputValue('');
-                }
-            };
-
-            const calculate = (firstOperand, secondOperand, operation) => {
-                if (secretResult !== null) {
-                    return parseFloat(secretResult);
-                }
-
-                switch (operation) {
-                    case '+':
-                        return firstOperand + secondOperand;
-                    case '-':
-                        return firstOperand - secondOperand;
-                    case '×':
-                        return firstOperand * secondOperand;
-                    case '÷':
-                        return secondOperand !== 0 ? firstOperand / secondOperand : 0;
-                    case '=':
-                        return secondOperand;
-                    default:
-                        return secondOperand;
-                }
-            };
-
-            const handleNumber = (num) => {
-                if (waitingForOperand) {
-                    setDisplay(String(num));
-                    setWaitingForOperand(false);
-                } else {
-                    setDisplay(display === '0' ? String(num) : display + num);
-                }
-            };
-
-            const handleOperator = (nextOperator) => {
-                const inputValue = parseFloat(display);
-
-                if (previousValue === null) {
-                    setPreviousValue(inputValue);
-                } else if (operation) {
-                    const currentValue = previousValue || 0;
-                    const newValue = calculate(currentValue, inputValue, operation);
-
-                    setDisplay(String(newValue));
-                    setPreviousValue(newValue);
-                }
-
-                setWaitingForOperand(true);
-                setOperation(nextOperator);
-            };
-
-            const handleEquals = () => {
-                const inputValue = parseFloat(display);
-
-                if (previousValue !== null && operation) {
-                    const newValue = calculate(previousValue, inputValue, operation);
-                    setDisplay(String(newValue));
-                    setPreviousValue(null);
-                    setOperation(null);
-                    setWaitingForOperand(true);
-                }
-            };
-
-            const handleClear = () => {
-                setDisplay('0');
-                setPreviousValue(null);
-                setOperation(null);
-                setWaitingForOperand(false);
-            };
-
-            const handlePercent = () => {
-                const value = parseFloat(display);
-                setDisplay(String(value / 100));
-            };
-
-            const handlePlusMinus = () => {
-                const value = parseFloat(display);
-                setDisplay(String(value * -1));
-            };
-
-            const handleDecimal = () => {
-                if (waitingForOperand) {
-                    setDisplay('0.');
-                    setWaitingForOperand(false);
-                } else if (display.indexOf('.') === -1) {
-                    setDisplay(display + '.');
-                }
-            };
-
-            const CalcIcon = () => (
-                React.createElement('svg', {
-                    width: "36",
-                    height: "44", 
-                    viewBox: "0 0 24 30",
-                    fill: "currentColor"
-                },
-                    React.createElement('rect', {x: "5", y: "4", width: "14", height: "22", rx: "2", fill: "white"}),
-                    React.createElement('rect', {x: "6.5", y: "5.5", width: "11", height: "4", rx: "1", fill: "black"}),
-                    React.createElement('circle', {cx: "8", cy: "13", r: "1.5", fill: "black"}),
-                    React.createElement('circle', {cx: "12", cy: "13", r: "1.5", fill: "black"}),
-                    React.createElement('circle', {cx: "16", cy: "13", r: "1.5", fill: "black"}),
-                    React.createElement('circle', {cx: "8", cy: "17", r: "1.5", fill: "black"}),
-                    React.createElement('circle', {cx: "12", cy: "17", r: "1.5", fill: "black"}),
-                    React.createElement('circle', {cx: "16", cy: "17", r: "1.5", fill: "black"}),
-                    React.createElement('circle', {cx: "8", cy: "21", r: "1.5", fill: "black"}),
-                    React.createElement('circle', {cx: "12", cy: "21", r: "1.5", fill: "black"}),
-                    React.createElement('circle', {cx: "16", cy: "21", r: "1.5", fill: "black"})
-                )
-            );
-
-            const Button = ({ onClick, className, children, span = 1 }) => (
-                React.createElement('button', {
-                    onClick: onClick,
-                    className: `${className} rounded-full font-bold text-2xl transition-all duration-150 active:scale-95 ${span === 2 ? 'col-span-2' : ''}`
-                }, children)
-            );
-
-            const portraitButtons = [
-                [
-                    { text: 'AC', action: handleClear, type: 'function' },
-                    { text: '+/-', action: handlePlusMinus, type: 'function' },
-                    { text: '%', action: handlePercent, type: 'function' },
-                    { text: '÷', action: () => handleOperator('÷'), type: 'operator' }
-                ],
-                [
-                    { text: '7', action: () => handleNumber(7), type: 'number' },
-                    { text: '8', action: () => handleNumber(8), type: 'number' },
-                    { text: '9', action: () => handleNumber(9), type: 'number' },
-                    { text: '×', action: () => handleOperator('×'), type: 'operator' }
-                ],
-                [
-                    { text: '4', action: () => handleNumber(4), type: 'number' },
-                    { text: '5', action: () => handleNumber(5), type: 'number' },
-                    { text: '6', action: () => handleNumber(6), type: 'number' },
-                    { text: '-', action: () => handleOperator('-'), type: 'operator' }
-                ],
-                [
-                    { text: '1', action: () => handleNumber(1), type: 'number' },
-                    { text: '2', action: () => handleNumber(2), type: 'number' },
-                    { text: '3', action: () => handleNumber(3), type: 'number' },
-                    { text: '+', action: () => handleOperator('+'), type: 'operator' }
-                ],
-                [
-                    { text: React.createElement(CalcIcon), action: () => {}, type: 'calc-icon' },
-                    { text: '0', action: () => handleNumber(0), type: 'number' },
-                    { text: ',', action: handleDecimal, type: 'number' },
-                    { text: '=', action: handleEquals, type: 'operator' }
-                ]
-            ];
-
-            const landscapeButtons = [
-                [
-                    { text: '7', action: () => handleNumber(7), type: 'number' },
-                    { text: '8', action: () => handleNumber(8), type: 'number' },
-                    { text: '9', action: () => handleNumber(9), type: 'number' },
-                    { text: 'AC', action: handleClear, type: 'function' },
-                    { text: '÷', action: () => handleOperator('÷'), type: 'operator' }
-                ],
-                [
-                    { text: '4', action: () => handleNumber(4), type: 'number' },
-                    { text: '5', action: () => handleNumber(5), type: 'number' },
-                    { text: '6', action: () => handleNumber(6), type: 'number' },
-                    { text: '+/-', action: handlePlusMinus, type: 'function' },
-                    { text: '×', action: () => handleOperator('×'), type: 'operator' }
-                ],
-                [
-                    { text: '1', action: () => handleNumber(1), type: 'number' },
-                    { text: '2', action: () => handleNumber(2), type: 'number' },
-                    { text: '3', action: () => handleNumber(3), type: 'number' },
-                    { text: '%', action: handlePercent, type: 'function' },
-                    { text: '-', action: () => handleOperator('-'), type: 'operator' }
-                ],
-                [
-                    { text: React.createElement(CalcIcon), action: () => {}, type: 'calc-icon' },
-                    { text: '0', action: () => handleNumber(0), type: 'number' },
-                    { text: ',', action: handleDecimal, type: 'number' },
-                    { text: '=', action: handleEquals, type: 'operator' },
-                    { text: '+', action: () => handleOperator('+'), type: 'operator' }
-                ]
-            ];
-
-            const getButtonStyle = (type) => {
-                switch (type) {
-                    case 'operator':
-                        return 'bg-amber-500 hover:bg-amber-400 text-white h-16 text-5xl font-light shadow-lg';
-                    case 'function':
-                        return 'bg-gray-500 hover:bg-gray-400 text-white h-16';
-                    case 'number':
-                        return 'bg-gray-700 hover:bg-gray-600 text-white h-16';
-                    case 'calc-icon':
-                        return 'bg-gray-700 hover:bg-gray-600 text-white h-16 flex items-center justify-center';
-                    default:
-                        return 'bg-gray-700 hover:bg-gray-600 text-white h-16';
-                }
-            };
-
-            if (showSecretInput) {
-                return React.createElement('div', {
-                    className: "min-h-screen bg-black flex items-center justify-center p-4"
-                },
-                    React.createElement('div', {
-                        className: "bg-gray-800 p-6 rounded-lg max-w-sm w-full"
-                    },
-                        React.createElement('h3', {
-                            className: "text-white text-lg mb-4"
-                        }, "Imposta risultato segreto:"),
-                        React.createElement('input', {
-                            type: "text",
-                            value: secretInputValue,
-                            onChange: (e) => setSecretInputValue(e.target.value),
-                            className: "w-full p-2 rounded bg-gray-700 text-white mb-4",
-                            placeholder: "Inserisci il risultato...",
-                            autoFocus: true
-                        }),
-                        React.createElement('div', {
-                            className: "flex gap-2"
-                        },
-                            React.createElement('button', {
-                                onClick: setSecretResultValue,
-                                className: "flex-1 bg-orange-500 text-white p-2 rounded hover:bg-orange-400"
-                            }, "Imposta"),
-                            React.createElement('button', {
-                                onClick: () => setShowSecretInput(false),
-                                className: "flex-1 bg-gray-600 text-white p-2 rounded hover:bg-gray-500"
-                            }, "Annulla")
-                        ),
-                        secretResult && React.createElement('p', {
-                            className: "text-green-400 text-sm mt-2"
-                        }, `Risultato attuale: ${secretResult}`)
-                    )
-                );
-            }
-
-            return React.createElement('div', {
-                className: "min-h-screen bg-black flex flex-col"
-            },
-                React.createElement('div', {
-                    className: "flex-1 flex items-end justify-end p-6",
-                    onDoubleClick: handleDoubleClick
-                },
-                    React.createElement('div', {
-                        className: "text-white text-right"
-                    },
-                        React.createElement('div', {
-                            className: `${isLandscape ? 'text-4xl' : 'text-6xl'} font-light`
-                        }, display)
-                    )
-                ),
-                React.createElement('div', {
-                    className: "p-4"
-                },
-                    isLandscape ? 
-                        React.createElement('div', {
-                            className: "grid grid-cols-5 gap-3"
-                        },
-                            landscapeButtons.map((row, rowIndex) =>
-                                row.map((button, colIndex) => 
-                                    React.createElement(Button, {
-                                        key: `${rowIndex}-${colIndex}`,
-                                        onClick: button.action,
-                                        className: getButtonStyle(button.type),
-                                        span: button.span
-                                    }, button.text)
-                                )
-                            )
-                        ) :
-                        React.createElement('div', {
-                            className: "grid grid-cols-4 gap-3"
-                        },
-                            portraitButtons.map((row, rowIndex) =>
-                                row.map((button, colIndex) => 
-                                    React.createElement(Button, {
-                                        key: `${rowIndex}-${colIndex}`,
-                                        onClick: button.action,
-                                        className: getButtonStyle(button.type),
-                                        span: button.span
-                                    }, button.text)
-                                )
-                            )
-                        )
-                )
-            );
-        };
-
-        ReactDOM.render(React.createElement(Calculator), document.getElementById('root'));
-    </script>
+  <noscript>You need to enable JavaScript to run this app.</noscript>
+  <div id="root"></div>
+  
+  <!-- Service Worker Registration -->
+  <script>
+    if ('serviceWorker' in navigator) {
+      window.addEventListener('load', () => {
+        navigator.serviceWorker.register('/sw.js')
+          .then((registration) => {
+            console.log('SW registered: ', registration);
+          })
+          .catch((registrationError) => {
+            console.log('SW registration failed: ', registrationError);
+          });
+      });
+    }
+  </script>
 </body>
 </html>

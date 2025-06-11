@@ -1,22 +1,78 @@
 {
-  "name": "Calcolatrice Pro",
-  "short_name": "Calc Pro",
-  "description": "Calcolatrice avanzata con layout personalizzato",
+  "name": "Calcolatrice",
+  "short_name": "Calc",
+  "description": "Calcolatrice moderna con funzionalità segrete",
   "start_url": "/",
   "display": "standalone",
   "background_color": "#000000",
-  "theme_color": "#f59e0b",
+  "theme_color": "#000000",
   "orientation": "any",
-  "icons": [
+  "scope": "/",
+  "lang": "it",
+  "categories": ["utilities", "productivity"],
+  "screenshots": [
     {
-      "src": "icon-192.png",
-      "sizes": "192x192",
-      "type": "image/png"
+      "src": "data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMzIwIiBoZWlnaHQ9IjU2OCIgdmlld0JveD0iMCAwIDMyMCA1NjgiIGZpbGw9Im5vbmUiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+CjxyZWN0IHdpZHRoPSIzMjAiIGhlaWdodD0iNTY4IiBmaWxsPSIjMDAwMDAwIi8+CjxyZWN0IHg9IjIwIiB5PSIxMDAiIHdpZHRoPSIyODAiIGhlaWdodD0iMTAwIiByeD0iMTAiIGZpbGw9IiMxMTExMTEiLz4KPHR5cGUgeD0iMjQwIiB5PSIxNjAiIGZvbnQtZmFtaWx5PSJBcmlhbCIgZm9udC1zaXplPSI0OCIgZmlsbD0id2hpdGUiPjEyMzwvdGV4dD4KPC9zdmc+",
+      "sizes": "320x568",
+      "type": "image/svg+xml",
+      "form_factor": "narrow"
     },
     {
-      "src": "icon-512.png",
-      "sizes": "512x512",
-      "type": "image/png"
+      "src": "data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iNTY4IiBoZWlnaHQ9IjMyMCIgdmlld0JveD0iMCAwIDU2OCAzMjAiIGZpbGw9Im5vbmUiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+CjxyZWN0IHdpZHRoPSI1NjgiIGhlaWdodD0iMzIwIiBmaWxsPSIjMDAwMDAwIi8+CjxyZWN0IHg9IjIwIiB5PSIyMCIgd2lkdGg9IjUyOCIgaGVpZ2h0PSI4MCIgcng9IjEwIiBmaWxsPSIjMTExMTExIi8+Cjx0ZXh0IHg9IjQ4MCIgeT0iNzAiIGZvbnQtZmFtaWx5PSJBcmlhbCIgZm9udC1zaXplPSIzNiIgZmlsbD0id2hpdGUiPjEyMzwvdGV4dD4KPC9zdmc+",
+      "sizes": "568x320",
+      "type": "image/svg+xml",
+      "form_factor": "wide"
     }
-  ]
+  ],
+  "icons": [
+    {
+      "src": "data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iNDgiIGhlaWdodD0iNDgiIHZpZXdCb3g9IjAgMCA0OCA0OCIgZmlsbD0ibm9uZSIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj4KPHJlY3Qgd2lkdGg9IjQ4IiBoZWlnaHQ9IjQ4IiBmaWxsPSIjMDAwMDAwIiByeD0iNiIvPgo8cmVjdCB4PSI2IiB5PSI2IiB3aWR0aD0iMzYiIGhlaWdodD0iMzYiIHJ4PSIzIiBmaWxsPSJ3aGl0ZSIvPgo8cmVjdCB4PSI5IiB5PSI5IiB3aWR0aD0iMzAiIGhlaWdodD0iNiIgcng9IjEuNSIgZmlsbD0iYmxhY2siLz4KPGNpcmNsZSBjeD0iMTUiIGN5PSIyMiIgcj0iMiIgZmlsbD0iYmxhY2siLz4KPGNpcmNsZSBjeD0iMjQiIGN5PSIyMiIgcj0iMiIgZmlsbD0iYmxhY2siLz4KPGNpcmNsZSBjeD0iMzMiIGN5PSIyMiIgcj0iMiIgZmlsbD0iYmxhY2siLz4KPGNpcmNsZSBjeD0iMTUiIGN5PSIzMCIgcj0iMiIgZmlsbD0iYmxhY2siLz4KPGNpcmNsZSBjeD0iMjQiIGN5PSIzMCIgcj0iMiIgZmlsbD0iYmxhY2siLz4KPGNpcmNsZSBjeD0iMzMiIGN5PSIzMCIgcj0iMiIgZmlsbD0iYmxhY2siLz4KPGNpcmNsZSBjeD0iMTUiIGN5PSIzOCIgcj0iMiIgZmlsbD0iYmxhY2siLz4KPGNpcmNsZSBjeD0iMjQiIGN5PSIzOCIgcj0iMiIgZmlsbD0iYmxhY2siLz4KPGNpcmNsZSBjeD0iMzMiIGN5PSIzOCIgcj0iMiIgZmlsbD0iYmxhY2siLz4KPC9zdmc+",
+      "sizes": "48x48",
+      "type": "image/svg+xml"
+    },
+    {
+      "src": "data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iNzIiIGhlaWdodD0iNzIiIHZpZXdCb3g9IjAgMCA3MiA3MiIgZmlsbD0ibm9uZSIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj4KPHJlY3Qgd2lkdGg9IjcyIiBoZWlnaHQ9IjcyIiBmaWxsPSIjMDAwMDAwIiByeD0iOSIvPgo8cmVjdCB4PSI5IiB5PSI5IiB3aWR0aD0iNTQiIGhlaWdodD0iNTQiIHJ4PSI0LjUiIGZpbGw9IndoaXRlIi8+CjxyZWN0IHg9IjEzLjUiIHk9IjEzLjUiIHdpZHRoPSI0NSIgaGVpZ2h0PSI5IiByeD0iMi4yNSIgZmlsbD0iYmxhY2siLz4KPGNpcmNsZSBjeD0iMjIuNSIgY3k9IjMzIiByPSIzIiBmaWxsPSJibGFjayIvPgo8Y2lyY2xlIGN4PSIzNiIgY3k9IjMzIiByPSIzIiBmaWxsPSJibGFjayIvPgo8Y2lyY2xlIGN4PSI0OS41IiBjeT0iMzMiIHI9IjMiIGZpbGw9ImJsYWNrIi8+CjxjaXJjbGUgY3g9IjIyLjUiIGN5PSI0NSIgcj0iMyIgZmlsbD0iYmxhY2siLz4KPGNpcmNsZSBjeD0iMzYiIGN5PSI0NSIgcj0iMyIgZmlsbD0iYmxhY2siLz4KPGNpcmNsZSBjeD0iNDkuNSIgY3k9IjQ1IiByPSIzIiBmaWxsPSJibGFjayIvPgo8Y2lyY2xlIGN4PSIyMi41IiBjeT0iNTciIHI9IjMiIGZpbGw9ImJsYWNrIi8+CjxjaXJjbGUgY3g9IjM2IiBjeT0iNTciIHI9IjMiIGZpbGw9ImJsYWNrIi8+CjxjaXJjbGUgY3g9IjQ5LjUiIGN5PSI1NyIgcj0iMyIgZmlsbD0iYmxhY2siLz4KPC9zdmc+",
+      "sizes": "72x72",
+      "type": "image/svg+xml"
+    },
+    {
+      "src": "data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iOTYiIGhlaWdodD0iOTYiIHZpZXdCb3g9IjAgMCA5NiA5NiIgZmlsbD0ibm9uZSIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj4KPHJlY3Qgd2lkdGg9Ijk2IiBoZWlnaHQ9Ijk2IiBmaWxsPSIjMDAwMDAwIiByeD0iMTIiLz4KPHJlY3QgeD0iMTIiIHk9IjEyIiB3aWR0aD0iNzIiIGhlaWdodD0iNzIiIHJ4PSI2IiBmaWxsPSJ3aGl0ZSIvPgo8cmVjdCB4PSIxOCIgeT0iMTgiIHdpZHRoPSI2MCIgaGVpZ2h0PSIxMiIgcng9IjMiIGZpbGw9ImJsYWNrIi8+CjxjaXJjbGUgY3g9IjMwIiBjeT0iNDQiIHI9IjQiIGZpbGw9ImJsYWNrIi8+CjxjaXJjbGUgY3g9IjQ4IiBjeT0iNDQiIHI9IjQiIGZpbGw9ImJsYWNrIi8+CjxjaXJjbGUgY3g9IjY2IiBjeT0iNDQiIHI9IjQiIGZpbGw9ImJsYWNrIi8+CjxjaXJjbGUgY3g9IjMwIiBjeT0iNjAiIHI9IjQiIGZpbGw9ImJsYWNrIi8+CjxjaXJjbGUgY3g9IjQ4IiBjeT0iNjAiIHI9IjQiIGZpbGw9ImJsYWNrIi8+CjxjaXJjbGUgY3g9IjY2IiBjeT0iNjAiIHI9IjQiIGZpbGw9ImJsYWNrIi8+CjxjaXJjbGUgY3g9IjMwIiBjeT0iNzYiIHI9IjQiIGZpbGw9ImJsYWNrIi8+CjxjaXJjbGUgY3g9IjQ4IiBjeT0iNzYiIHI9IjQiIGZpbGw9ImJsYWNrIi8+CjxjaXJjbGUgY3g9IjY2IiBjeT0iNzYiIHI9IjQiIGZpbGw9ImJsYWNrIi8+Cjwvc3ZnPg==",
+      "sizes": "96x96",
+      "type": "image/svg+xml"
+    },
+    {
+      "src": "data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMTQ0IiBoZWlnaHQ9IjE0NCIgdmlld0JveD0iMCAwIDE0NCAxNDQiIGZpbGw9Im5vbmUiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+CjxyZWN0IHdpZHRoPSIxNDQiIGhlaWdodD0iMTQ0IiBmaWxsPSIjMDAwMDAwIiByeD0iMTgiLz4KPHJlY3QgeD0iMTgiIHk9IjE4IiB3aWR0aD0iMTA4IiBoZWlnaHQ9IjEwOCIgcng9IjkiIGZpbGw9IndoaXRlIi8+CjxyZWN0IHg9IjI3IiB5PSIyNyIgd2lkdGg9IjkwIiBoZWlnaHQ9IjE4IiByeD0iNC41IiBmaWxsPSJibGFjayIvPgo8Y2lyY2xlIGN4PSI0NSIgY3k9IjY2IiByPSI2IiBmaWxsPSJibGFjayIvPgo8Y2lyY2xlIGN4PSI3MiIgY3k9IjY2IiByPSI2IiBmaWxsPSJibGFjayIvPgo8Y2lyY2xlIGN4PSI5OSIgY3k9IjY2IiByPSI2IiBmaWxsPSJibGFjayIvPgo8Y2lyY2xlIGN4PSI0NSIgY3k9IjkwIiByPSI2IiBmaWxsPSJibGFjayIvPgo8Y2lyY2xlIGN4PSI3MiIgY3k9IjkwIiByPSI2IiBmaWxsPSJibGFjayIvPgo8Y2lyY2xlIGN4PSI5OSIgY3k9IjkwIiByPSI2IiBmaWxsPSJibGFjayIvPgo8Y2lyY2xlIGN4PSI0NSIgY3k9IjExNCIgcj0iNiIgZmlsbD0iYmxhY2siLz4KPGNpcmNsZSBjeD0iNzIiIGN5PSIxMTQiIHI9IjYiIGZpbGw9ImJsYWNrIi8+CjxjaXJjbGUgY3g9Ijk5IiBjeT0iMTE0IiByPSI2IiBmaWxsPSJibGFjayIvPgo8L3N2Zz4=",
+      "sizes": "144x144",
+      "type": "image/svg+xml"
+    },
+    {
+      "src": "data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMTkyIiBoZWlnaHQ9IjE5MiIgdmlld0JveD0iMCAwIDE5MiAxOTIiIGZpbGw9Im5vbmUiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+CjxyZWN0IHdpZHRoPSIxOTIiIGhlaWdodD0iMTkyIiBmaWxsPSIjMDAwMDAwIiByeD0iMjQiLz4KPHJlY3QgeD0iMjQiIHk9IjI0IiB3aWR0aD0iMTQ0IiBoZWlnaHQ9IjE0NCIgcng9IjEyIiBmaWxsPSJ3aGl0ZSIvPgo8cmVjdCB4PSIzNiIgeT0iMzYiIHdpZHRoPSIxMjAiIGhlaWdodD0iMjQiIHJ4PSI2IiBmaWxsPSJibGFjayIvPgo8Y2lyY2xlIGN4PSI2MCIgY3k9Ijg4IiByPSI4IiBmaWxsPSJibGFjayIvPgo8Y2lyY2xlIGN4PSI5NiIgY3k9Ijg4IiByPSI4IiBmaWxsPSJibGFjayIvPgo8Y2lyY2xlIGN4PSIxMzIiIGN5PSI4OCIgcj0iOCIgZmlsbD0iYmxhY2siLz4KPGNpcmNsZSBjeD0iNjAiIGN5PSIxMjAiIHI9IjgiIGZpbGw9ImJsYWNrIi8+CjxjaXJjbGUgY3g9Ijk2IiBjeT0iMTIwIiByPSI4IiBmaWxsPSJibGFjayIvPgo8Y2lyY2xlIGN4PSIxMzIiIGN5PSIxMjAiIHI9IjgiIGZpbGw9ImJsYWNrIi8+CjxjaXJjbGUgY3g9IjYwIiBjeT0iMTUyIiByPSI4IiBmaWxsPSJibGFjayIvPgo8Y2lyY2xlIGN4PSI5NiIgY3k9IjE1MiIgcj0iOCIgZmlsbD0iYmxhY2siLz4KPGNpcmNsZSBjeD0iMTMyIiBjeT0iMTUyIiByPSI4IiBmaWxsPSJibGFjayIvPgo8L3N2Zz4=",
+      "sizes": "192x192",
+      "type": "image/svg+xml"
+    },
+    {
+      "src": "data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iNTEyIiBoZWlnaHQ9IjUxMiIgdmlld0JveD0iMCAwIDUxMiA1MTIiIGZpbGw9Im5vbmUiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+CjxyZWN0IHdpZHRoPSI1MTIiIGhlaWdodD0iNTEyIiBmaWxsPSIjMDAwMDAwIiByeD0iNjQiLz4KPHJlY3QgeD0iNjQiIHk9IjY0IiB3aWR0aD0iMzg0IiBoZWlnaHQ9IjM4NCIgcng9IjMyIiBmaWxsPSJ3aGl0ZSIvPgo8cmVjdCB4PSI5NiIgeT0iOTYiIHdpZHRoPSIzMjAiIGhlaWdodD0iNjQiIHJ4PSIxNiIgZmlsbD0iYmxhY2siLz4KPGNpcmNsZSBjeD0iMTYwIiBjeT0iMjI0IiByPSIyMCIgZmlsbD0iYmxhY2siLz4KPGNpcmNsZSBjeD0iMjU2IiBjeT0iMjI0IiByPSIyMCIgZmlsbD0iYmxhY2siLz4KPGNpcmNsZSBjeD0iMzUyIiBjeT0iMjI0IiByPSIyMCIgZmlsbD0iYmxhY2siLz4KPGNpcmNsZSBjeD0iMTYwIiBjeT0iMzIwIiByPSIyMCIgZmlsbD0iYmxhY2siLz4KPGNpcmNsZSBjeD0iMjU2IiBjeT0iMzIwIiByPSIyMCIgZmlsbD0iYmxhY2siLz4KPGNpcmNsZSBjeD0iMzUyIiBjeT0iMzIwIiByPSIyMCIgZmlsbD0iYmxhY2siLz4KPGNpcmNsZSBjeD0iMTYwIiBjeT0iNDE2IiByPSIyMCIgZmlsbD0iYmxhY2siLz4KPGNpcmNsZSBjeD0iMjU2IiBjeT0iNDE2IiByPSIyMCIgZmlsbD0iYmxhY2siLz4KPGNpcmNsZSBjeD0iMzUyIiBjeT0iNDE2IiByPSIyMCIgZmlsbD0iYmxhY2siLz4KPC9zdmc+",
+      "sizes": "512x512",
+      "type": "image/svg+xml",
+      "purpose": "any maskable"
+    }
+  ],
+  "shortcuts": [
+    {
+      "name": "Nuova Calcolazione",
+      "short_name": "Calcola",
+      "description": "Avvia una nuova calcolazione",
+      "url": "/?action=new",
+      "icons": [
+        {
+          "src": "data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iOTYiIGhlaWdodD0iOTYiIHZpZXdCb3g9IjAgMCA5NiA5NiIgZmlsbD0ibm9uZSIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj4KPHJlY3Qgd2lkdGg9Ijk2IiBoZWlnaHQ9Ijk2IiBmaWxsPSIjRjU5RTBCIiByeD0iMTIiLz4KPHN2ZyB4PSIyNCIgeT0iMjQiIHdpZHRoPSI0OCIgaGVpZ2h0PSI0OCIgdmlld0JveD0iMCAwIDI0IDI0IiBmaWxsPSJ3aGl0ZSI+CjxwYXRoIGQ9Ik0xOSAxM2gtNnY2aC0ydi02SDV2LTJoNlY1aDJ2NmgtNnYyeiIvPgo8L3N2Zz4KPC9zdmc+",
+          "sizes": "96x96"
+        }
+      ]
+    }
+  ],
+  "prefer_related_applications": false,
+  "related_applications": [],
+  "dir": "ltr",
+  "display_override": ["standalone", "minimal-ui"]
 }

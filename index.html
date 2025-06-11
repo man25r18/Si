@@ -357,13 +357,26 @@
 lastOperation && React.createElement('div', {
   style: {
     color: '#b7b7b7',
-    fontSize: '0.9em',
-    marginBottom: '0.15em',
+    fontSize: '1.5em',           // Più grande
+    marginBottom: '0',           // Più vicino al display sotto
     width: '100%',
     display: 'flex',
     justifyContent: 'flex-end'
   }
 }, lastOperation),
+// Storico sopra (operationDisplay)
+operationDisplay && React.createElement('div', {
+  style: {
+    color: '#b7b7b7',
+    fontSize: '1.2em',
+    marginBottom: '0.05em',
+    width: '100%',
+    display: 'flex',
+    justifyContent: 'flex-end'
+  }
+}, operationDisplay),
+
+// Valore attuale grande (display)
 React.createElement('div', {
   className: "text-white text-right w-full",
   style: {
@@ -372,19 +385,10 @@ React.createElement('div', {
     alignItems: 'flex-end',
     justifyContent: 'flex-end',
     overflowX: 'auto',
-    fontSize: (() => {
-      // Calcola la lunghezza totale da mostrare
-      const totalLength = (operationDisplay + display).length;
-      if (totalLength > 24) return '1em';
-      if (totalLength > 18) return '1.4em';
-      if (totalLength > 12) return '2em';
-      return isLandscape ? '2.5em' : '3em';
-    })(),
+    fontSize: isLandscape ? '2.5em' : '3em',
     transition: 'font-size 0.2s'
   }
-}, 
-  `${operationDisplay}${display}`
-),
+}, display)
           ),
             
             // Buttons

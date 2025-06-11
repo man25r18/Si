@@ -319,7 +319,7 @@
             React.createElement('div', { key: 'buttons', className: "flex-none p-4 pb-10" },
               isLandscape ? 
                 // Modalità orizzontale
-                React.createElement('div', { className: "grid grid-cols-5 gap-3 h-full" }, [
+                React.createElement('div', { className: "grid grid-cols-5 gap-3 h-auto" }, [
                   // Colonna 1
                   React.createElement('div', { key: 'col1', className: "flex flex-col gap-3" }, [
                     React.createElement(Button, { key: '7', onClick: () => handleNumber(7), className: getButtonStyle('number'), landscape: true }, '7'),

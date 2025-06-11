@@ -88,6 +88,11 @@
           const [secretResult, setSecretResult] = useState(null);
           const [showSecretInput, setShowSecretInput] = useState(false);
           const [secretInputValue, setSecretInputValue] = useState('');
+          const [lastTap, setLastTap] = useState(0);
+          const [operationDisplay, setOperationDisplay] = useState('');
+          const [lastOperation, setLastOperation] = useState('');
+          const [operationDisplay, setOperationDisplay] = useState('');
+          const [lastOperation, setLastOperation] = useState('');
 
           useEffect(() => {
             const handleResize = () => {
@@ -139,6 +144,10 @@
               setWaitingForOperand(false);
             } else {
               setDisplay(display === '0' ? String(num) : display + num);
+              setOperationDisplay(op =>
+                (op === '' || op.endsWith('=')) ? 
+          String(num) : op + String(num)
+              );
             }
           };
 
@@ -157,6 +166,8 @@
 
             setWaitingForOperand(true);
             setOperation(nextOperator);
+
+            setOperationDisplay(op => op + ' ' + nextOperator + ' ');
           };
 
           const formatDisplay = (value) => {
@@ -179,6 +190,8 @@
               setPreviousValue(null);
               setOperation(null);
               setWaitingForOperand(true);
+              setLastOperation(operationDisplay + inputValue + ' =');
+              setOperationDisplay('');
             }
           };
 

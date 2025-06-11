@@ -31,7 +31,10 @@
     <style>
         @media (orientation: landscape) {
   .landscape-bottom-space {
-    padding-bottom: max(env(safe-area-inset-bottom), 24px) !important; /* Cambia 3cm come preferisci */
+    padding-bottom: env(safe-area-inset-bottom) !important; 
+      @media (orientation: landscape) {
+  .landscape-extra-top {
+    padding-top: 48px !important;
   }
 }
         html, body, #root {
@@ -274,7 +277,9 @@
 
           if (showSecretInput) {
             return React.createElement('div', {
-              className: "h-screen w-screen bg-black flex items-center justify-center p-4 fixed inset-0",
+              className: `h-screen w-screen bg-black flex flex-col overflow-hidden fixed inset-0 ${
+                isLandscape ? 'landscape-extra-top' : ''
+                  }`,
               style: {
                 paddingTop: 'env(safe-area-inset-top)',
                 paddingRight: 'env(safe-area-inset-right)',

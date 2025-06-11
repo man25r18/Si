@@ -2,28 +2,396 @@
 <html lang="it">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Calcolatrice Pro</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no, viewport-fit=cover">
+    <title>Calcolatrice</title>
     
     <!-- PWA Meta Tags -->
-    <link rel="manifest" href="/manifest.json">
-    <meta name="theme-color" content="#f59e0b">
+    <meta name="description" content="Calcolatrice moderna con funzionalità segrete">
+    <meta name="theme-color" content="#000000">
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-    <meta name="apple-mobile-web-app-title" content="Calc Pro">
-    <link rel="apple-touch-icon" href="/icon-192.png">
+    <meta name="apple-mobile-web-app-title" content="Calcolatrice">
+    <meta name="mobile-web-app-capable" content="yes">
     
-    <!-- Prevent zoom on mobile -->
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <!-- Manifest -->
+    <link rel="manifest" href="manifest.json">
+    
+    <!-- Icons -->
+    <link rel="icon" type="image/png" sizes="32x32" href="data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMzIiIGhlaWdodD0iMzIiIHZpZXdCb3g9IjAgMCAzMiAzMiIgZmlsbD0ibm9uZSIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj4KPHJlY3Qgd2lkdGg9IjMyIiBoZWlnaHQ9IjMyIiBmaWxsPSIjMDAwMDAwIiByeD0iNCIvPgo8cmVjdCB4PSI0IiB5PSI0IiB3aWR0aD0iMjQiIGhlaWdodD0iMjQiIHJ4PSIyIiBmaWxsPSJ3aGl0ZSIvPgo8cmVjdCB4PSI2IiB5PSI2IiB3aWR0aD0iMjAiIGhlaWdodD0iNCIgcng9IjEiIGZpbGw9ImJsYWNrIi8+CjxjaXJjbGUgY3g9IjEwIiBjeT0iMTUiIHI9IjEuNSIgZmlsbD0iYmxhY2siLz4KPGNpcmNsZSBjeD0iMTYiIGN5PSIxNSIgcj0iMS41IiBmaWxsPSJibGFjayIvPgo8Y2lyY2xlIGN4PSIyMiIgY3k9IjE1IiByPSIxLjUiIGZpbGw9ImJsYWNrIi8+CjxjaXJjbGUgY3g9IjEwIiBjeT0iMjAiIHI9IjEuNSIgZmlsbD0iYmxhY2siLz4KPGNpcmNsZSBjeD0iMTYiIGN5PSIyMCIgcj0iMS41IiBmaWxsPSJibGFjayIvPgo8Y2lyY2xlIGN4PSIyMiIgY3k9IjIwIiByPSIxLjUiIGZpbGw9ImJsYWNrIi8+CjxjaXJjbGUgY3g9IjEwIiBjeT0iMjUiIHI9IjEuNSIgZmlsbD0iYmxhY2siLz4KPGNpcmNsZSBjeD0iMTYiIGN5PSIyNSIgcj0iMS41IiBmaWxsPSJibGFjayIvPgo8Y2lyY2xlIGN4PSIyMiIgY3k9IjI1IiByPSIxLjUiIGZpbGw9ImJsYWNrIi8+Cjwvc3ZnPgo=">
+    <link rel="apple-touch-icon" href="data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMTgwIiBoZWlnaHQ9IjE4MCIgdmlld0JveD0iMCAwIDE4MCAxODAiIGZpbGw9Im5vbmUiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+CjxyZWN0IHdpZHRoPSIxODAiIGhlaWdodD0iMTgwIiBmaWxsPSIjMDAwMDAwIiByeD0iMjAiLz4KPHJlY3QgeD0iMjAiIHk9IjIwIiB3aWR0aD0iMTQwIiBoZWlnaHQ9IjE0MCIgcng9IjEwIiBmaWxsPSJ3aGl0ZSIvPgo8cmVjdCB4PSIzMCIgeT0iMzAiIHdpZHRoPSIxMjAiIGhlaWdodD0iMjQiIHJ4PSI0IiBmaWxsPSJibGFjayIvPgo8Y2lyY2xlIGN4PSI1NSIgY3k9IjgwIiByPSI4IiBmaWxsPSJibGFjayIvPgo8Y2lyY2xlIGN4PSI5MCIgY3k9IjgwIiByPSI4IiBmaWxsPSJibGFjayIvPgo8Y2lyY2xlIGN4PSIxMjUiIGN5PSI4MCIgcj0iOCIgZmlsbD0iYmxhY2siLz4KPGNpcmNsZSBjeD0iNTUiIGN5PSIxMTAiIHI9IjgiIGZpbGw9ImJsYWNrIi8+CjxjaXJjbGUgY3g9IjkwIiBjeT0iMTEwIiByPSI4IiBmaWxsPSJibGFjayIvPgo8Y2lyY2xlIGN4PSIxMjUiIGN5PSIxMTAiIHI9IjgiIGZpbGw9ImJsYWNrIi8+CjxjaXJjbGUgY3g9IjU1IiBjeT0iMTQwIiByPSI4IiBmaWxsPSJibGFjayIvPgo8Y2lyY2xlIGN4PSI5MCIgY3k9IjE0MCIgcj0iOCIgZmlsbD0iYmxhY2siLz4KPGNpcmNsZSBjeD0iMTI1IiBjeT0iMTQwIiByPSI4IiBmaWxsPSJibGFjayIvPgo8L3N2Zz4K">
+    
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    
+    <!-- React e Babel -->
+    <script crossorigin src="https://unpkg.com/react@18/umd/react.production.min.js"></script>
+    <script crossorigin src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js"></script>
+    <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+    
+    <style>
+        /* Nasconde la barra degli indirizzi sui dispositivi mobili */
+        body {
+            margin: 0;
+            padding: 0;
+            overflow: hidden;
+            -webkit-user-select: none;
+            -moz-user-select: none;
+            -ms-user-select: none;
+            user-select: none;
+            -webkit-touch-callout: none;
+            -webkit-tap-highlight-color: transparent;
+        }
+        
+        /* Supporto per safe areas */
+        @supports (padding: max(0px)) {
+            .safe-area-inset-top { padding-top: max(env(safe-area-inset-top), 0px); }
+            .safe-area-inset-right { padding-right: max(env(safe-area-inset-right), 0px); }
+            .safe-area-inset-bottom { padding-bottom: max(env(safe-area-inset-bottom), 0px); }
+            .safe-area-inset-left { padding-left: max(env(safe-area-inset-left), 0px); }
+        }
+        
+        /* Previene il zoom sui double tap per iOS */
+        * {
+            touch-action: manipulation;
+        }
+        
+        /* Nasconde lo scrollbar */
+        ::-webkit-scrollbar {
+            display: none;
+        }
+        
+        /* Per Firefox */
+        html {
+            scrollbar-width: none;
+        }
+    </style>
 </head>
 <body>
     <div id="root"></div>
-    
-    <!-- Service Worker Registration -->
+
+    <script type="text/babel">
+        // Il tuo componente Calculator qui
+        const { useState, useEffect } = React;
+
+        const Calculator = () => {
+          const [display, setDisplay] = useState('0');
+          const [previousValue, setPreviousValue] = useState(null);
+          const [operation, setOperation] = useState(null);
+          const [waitingForOperand, setWaitingForOperand] = useState(false);
+          const [isLandscape, setIsLandscape] = useState(window.innerWidth > window.innerHeight);
+          const [secretResult, setSecretResult] = useState(null);
+          const [showSecretInput, setShowSecretInput] = useState(false);
+          const [secretInputValue, setSecretInputValue] = useState('');
+
+          useEffect(() => {
+            const handleResize = () => {
+              setIsLandscape(window.innerWidth > window.innerHeight);
+            };
+
+            window.addEventListener('resize', handleResize);
+            return () => window.removeEventListener('resize', handleResize);
+          }, []);
+
+          const handleDoubleClick = () => {
+            setShowSecretInput(true);
+          };
+
+          const setSecretResultValue = () => {
+            if (secretInputValue.trim()) {
+              setSecretResult(parseFloat(secretInputValue.trim()));
+              setDisplay(formatDisplay(secretInputValue.trim()));
+              setShowSecretInput(false);
+              setSecretInputValue('');
+            }
+          };
+
+          const calculate = (firstOperand, secondOperand, operation) => {
+            // Se è impostato un risultato segreto, ritorna sempre quello
+            if (secretResult !== null) {
+              return parseFloat(secretResult);
+            }
+
+            switch (operation) {
+              case '+':
+                return firstOperand + secondOperand;
+              case '-':
+                return firstOperand - secondOperand;
+              case '×':
+                return firstOperand * secondOperand;
+              case '÷':
+                return secondOperand !== 0 ? firstOperand / secondOperand : 0;
+              case '=':
+                return secondOperand;
+              default:
+                return secondOperand;
+            }
+          };
+
+          const handleNumber = (num) => {
+            if (waitingForOperand) {
+              setDisplay(String(num));
+              setWaitingForOperand(false);
+            } else {
+              setDisplay(display === '0' ? String(num) : display + num);
+            }
+          };
+
+          const handleOperator = (nextOperator) => {
+            const inputValue = parseFloat(display);
+
+            if (previousValue === null) {
+              setPreviousValue(inputValue);
+            } else if (operation) {
+              const currentValue = previousValue || 0;
+              const newValue = calculate(currentValue, inputValue, operation);
+
+              setDisplay(formatDisplay(newValue));
+              setPreviousValue(newValue);
+            }
+
+            setWaitingForOperand(true);
+            setOperation(nextOperator);
+          };
+
+          const formatDisplay = (value) => {
+            const str = String(value);
+            // Solo in modalità verticale, se il numero è troppo lungo, usa notazione scientifica
+            if (!isLandscape && str.length > 9) {
+              const num = parseFloat(str);
+              return num.toExponential(3);
+            }
+            // In modalità orizzontale mostra sempre il valore per intero
+            return str;
+          };
+
+          const handleEquals = () => {
+            const inputValue = parseFloat(display);
+
+            if (previousValue !== null && operation) {
+              const newValue = calculate(previousValue, inputValue, operation);
+              setDisplay(formatDisplay(newValue));
+              setPreviousValue(null);
+              setOperation(null);
+              setWaitingForOperand(true);
+            }
+          };
+
+          const handleClear = () => {
+            setDisplay('0');
+            setPreviousValue(null);
+            setOperation(null);
+            setWaitingForOperand(false);
+          };
+
+          const handlePercent = () => {
+            const value = parseFloat(display);
+            const result = value / 100;
+            setDisplay(formatDisplay(result));
+          };
+
+          const handlePlusMinus = () => {
+            const value = parseFloat(display);
+            const result = value * -1;
+            setDisplay(formatDisplay(result));
+          };
+
+          const handleDecimal = () => {
+            if (waitingForOperand) {
+              setDisplay('0.');
+              setWaitingForOperand(false);
+            } else if (display.indexOf('.') === -1) {
+              setDisplay(display + '.');
+            }
+          };
+
+          const CalcIcon = () => (
+            React.createElement('svg', {
+              width: "36",
+              height: "44", 
+              viewBox: "0 0 24 30",
+              fill: "currentColor"
+            }, [
+              React.createElement('rect', { key: 'main', x: "5", y: "4", width: "14", height: "22", rx: "2", fill: "white"}),
+              React.createElement('rect', { key: 'display', x: "6.5", y: "5.5", width: "11", height: "4", rx: "1", fill: "black"}),
+              React.createElement('circle', { key: 'c1', cx: "8", cy: "13", r: "1.5", fill: "black"}),
+              React.createElement('circle', { key: 'c2', cx: "12", cy: "13", r: "1.5", fill: "black"}),
+              React.createElement('circle', { key: 'c3', cx: "16", cy: "13", r: "1.5", fill: "black"}),
+              React.createElement('circle', { key: 'c4', cx: "8", cy: "17", r: "1.5", fill: "black"}),
+              React.createElement('circle', { key: 'c5', cx: "12", cy: "17", r: "1.5", fill: "black"}),
+              React.createElement('circle', { key: 'c6', cx: "16", cy: "17", r: "1.5", fill: "black"}),
+              React.createElement('circle', { key: 'c7', cx: "8", cy: "21", r: "1.5", fill: "black"}),
+              React.createElement('circle', { key: 'c8', cx: "12", cy: "21", r: "1.5", fill: "black"}),
+              React.createElement('circle', { key: 'c9', cx: "16", cy: "21", r: "1.5", fill: "black"})
+            ])
+          );
+
+          const Button = ({ onClick, className, children, span = 1 }) => (
+            React.createElement('button', {
+              onClick: onClick,
+              className: `${className} rounded-full font-normal text-3xl transition-all duration-150 active:scale-95 aspect-square ${
+                span === 2 ? 'col-span-2 aspect-auto' : ''
+              }`
+            }, children)
+          );
+
+          const getButtonStyle = (type) => {
+            switch (type) {
+              case 'operator':
+                return 'bg-amber-500 hover:bg-amber-400 text-white text-5xl font-light shadow-lg flex items-center justify-center';
+              case 'function':
+                return 'bg-gray-500 hover:bg-gray-400 text-white flex items-center justify-center';
+              case 'number':
+                return 'bg-gray-700 hover:bg-gray-600 text-white flex items-center justify-center';
+              case 'calc-icon':
+                return 'bg-gray-700 hover:bg-gray-600 text-white flex items-center justify-center';
+              default:
+                return 'bg-gray-700 hover:bg-gray-600 text-white flex items-center justify-center';
+            }
+          };
+
+          if (showSecretInput) {
+            return React.createElement('div', {
+              className: "h-screen w-screen bg-black flex items-center justify-center p-4 fixed inset-0",
+              style: {
+                paddingTop: 'env(safe-area-inset-top)',
+                paddingRight: 'env(safe-area-inset-right)',
+                paddingBottom: 'env(safe-area-inset-bottom)',
+                paddingLeft: 'env(safe-area-inset-left)'
+              }
+            }, 
+              React.createElement('div', { className: "bg-gray-800 p-6 rounded-lg max-w-sm w-full" }, [
+                React.createElement('h3', { key: 'title', className: "text-white text-lg mb-4" }, 'Imposta risultato segreto:'),
+                React.createElement('input', {
+                  key: 'input',
+                  type: "text",
+                  value: secretInputValue,
+                  onChange: (e) => setSecretInputValue(e.target.value),
+                  className: "w-full p-2 rounded bg-gray-700 text-white mb-4",
+                  placeholder: "Inserisci il risultato...",
+                  autoFocus: true
+                }),
+                React.createElement('div', { key: 'buttons', className: "flex gap-2" }, [
+                  React.createElement('button', {
+                    key: 'set',
+                    onClick: setSecretResultValue,
+                    className: "flex-1 bg-orange-500 text-white p-2 rounded hover:bg-orange-400"
+                  }, 'Imposta'),
+                  React.createElement('button', {
+                    key: 'cancel',
+                    onClick: () => setShowSecretInput(false),
+                    className: "flex-1 bg-gray-600 text-white p-2 rounded hover:bg-gray-500"
+                  }, 'Annulla')
+                ])
+              ])
+            );
+          }
+
+          return React.createElement('div', {
+            className: "h-screen w-screen bg-black flex flex-col overflow-hidden fixed inset-0",
+            style: {
+              paddingTop: 'env(safe-area-inset-top)',
+              paddingRight: 'env(safe-area-inset-right)',
+              paddingBottom: 'env(safe-area-inset-bottom)',
+              paddingLeft: 'env(safe-area-inset-left)'
+            }
+          }, [
+            // Display
+            React.createElement('div', {
+              key: 'display',
+              className: `flex-1 flex items-end justify-end px-6 pb-4`,
+              onDoubleClick: handleDoubleClick
+            },
+              React.createElement('div', { className: "text-white text-right" },
+                React.createElement('div', {
+                  className: `${isLandscape ? 'text-5xl' : 'text-7xl'} font-medium`,
+                  style: { fontWeight: '500' }
+                }, display)
+              )
+            ),
+            
+            // Buttons
+            React.createElement('div', { key: 'buttons', className: "flex-none p-4 pb-10" },
+              isLandscape ? 
+                // Modalità orizzontale
+                React.createElement('div', { className: "grid grid-cols-5 gap-3 h-full" }, [
+                  // Colonna 1
+                  React.createElement('div', { key: 'col1', className: "flex flex-col gap-3" }, [
+                    React.createElement(Button, { key: '7', onClick: () => handleNumber(7), className: getButtonStyle('number') }, '7'),
+                    React.createElement(Button, { key: '4', onClick: () => handleNumber(4), className: getButtonStyle('number') }, '4'),
+                    React.createElement(Button, { key: '1', onClick: () => handleNumber(1), className: getButtonStyle('number') }, '1'),
+                    React.createElement(Button, { key: 'icon', onClick: () => {}, className: getButtonStyle('calc-icon') }, React.createElement(CalcIcon))
+                  ]),
+                  // Colonna 2
+                  React.createElement('div', { key: 'col2', className: "flex flex-col gap-3" }, [
+                    React.createElement(Button, { key: '8', onClick: () => handleNumber(8), className: getButtonStyle('number') }, '8'),
+                    React.createElement(Button, { key: '5', onClick: () => handleNumber(5), className: getButtonStyle('number') }, '5'),
+                    React.createElement(Button, { key: '2', onClick: () => handleNumber(2), className: getButtonStyle('number') }, '2'),
+                    React.createElement(Button, { key: '0', onClick: () => handleNumber(0), className: getButtonStyle('number') }, '0')
+                  ]),
+                  // Colonna 3
+                  React.createElement('div', { key: 'col3', className: "flex flex-col gap-3" }, [
+                    React.createElement(Button, { key: '9', onClick: () => handleNumber(9), className: getButtonStyle('number') }, '9'),
+                    React.createElement(Button, { key: '6', onClick: () => handleNumber(6), className: getButtonStyle('number') }, '6'),
+                    React.createElement(Button, { key: '3', onClick: () => handleNumber(3), className: getButtonStyle('number') }, '3'),
+                    React.createElement(Button, { key: ',', onClick: handleDecimal, className: getButtonStyle('number') }, ',')
+                  ]),
+                  // Colonna 4
+                  React.createElement('div', { key: 'col4', className: "flex flex-col gap-3" }, [
+                    React.createElement(Button, { key: 'AC', onClick: handleClear, className: getButtonStyle('function') }, 'AC'),
+                    React.createElement(Button, { key: '+-', onClick: handlePlusMinus, className: getButtonStyle('function') }, '+/-'),
+                    React.createElement(Button, { key: '%', onClick: handlePercent, className: getButtonStyle('function') }, '%'),
+                    React.createElement(Button, { key: '=', onClick: handleEquals, className: getButtonStyle('operator') }, '=')
+                  ]),
+                  // Colonna 5
+                  React.createElement('div', { key: 'col5', className: "flex flex-col gap-3" }, [
+                    React.createElement(Button, { key: '÷', onClick: () => handleOperator('÷'), className: getButtonStyle('operator') }, '÷'),
+                    React.createElement(Button, { key: '×', onClick: () => handleOperator('×'), className: getButtonStyle('operator') }, '×'),
+                    React.createElement(Button, { key: '-', onClick: () => handleOperator('-'), className: getButtonStyle('operator') }, '-'),
+                    React.createElement(Button, { key: '+', onClick: () => handleOperator('+'), className: getButtonStyle('operator') }, '+')
+                  ])
+                ])
+              :
+                // Modalità verticale
+                React.createElement('div', { className: "grid grid-cols-4 gap-3" }, [
+                  // Riga 1
+                  React.createElement(Button, { key: 'AC', onClick: handleClear, className: getButtonStyle('function') }, 'AC'),
+                  React.createElement(Button, { key: '+-', onClick: handlePlusMinus, className: getButtonStyle('function') }, '+/-'),
+                  React.createElement(Button, { key: '%', onClick: handlePercent, className: getButtonStyle('function') }, '%'),
+                  React.createElement(Button, { key: '÷', onClick: () => handleOperator('÷'), className: getButtonStyle('operator') }, '÷'),
+                  // Riga 2
+                  React.createElement(Button, { key: '7', onClick: () => handleNumber(7), className: getButtonStyle('number') }, '7'),
+                  React.createElement(Button, { key: '8', onClick: () => handleNumber(8), className: getButtonStyle('number') }, '8'),
+                  React.createElement(Button, { key: '9', onClick: () => handleNumber(9), className: getButtonStyle('number') }, '9'),
+                  React.createElement(Button, { key: '×', onClick: () => handleOperator('×'), className: getButtonStyle('operator') }, '×'),
+                  // Riga 3
+                  React.createElement(Button, { key: '4', onClick: () => handleNumber(4), className: getButtonStyle('number') }, '4'),
+                  React.createElement(Button, { key: '5', onClick: () => handleNumber(5), className: getButtonStyle('number') }, '5'),
+                  React.createElement(Button, { key: '6', onClick: () => handleNumber(6), className: getButtonStyle('number') }, '6'),
+                  React.createElement(Button, { key: '-', onClick: () => handleOperator('-'), className: getButtonStyle('operator') }, '-'),
+                  // Riga 4
+                  React.createElement(Button, { key: '1', onClick: () => handleNumber(1), className: getButtonStyle('number') }, '1'),
+                  React.createElement(Button, { key: '2', onClick: () => handleNumber(2), className: getButtonStyle('number') }, '2'),
+                  React.createElement(Button, { key: '3', onClick: () => handleNumber(3), className: getButtonStyle('number') }, '3'),
+                  React.createElement(Button, { key: '+', onClick: () => handleOperator('+'), className: getButtonStyle('operator') }, '+'),
+                  // Riga 5
+                  React.createElement(Button, { key: 'icon', onClick: () => {}, className: getButtonStyle('calc-icon') }, React.createElement(CalcIcon)),
+                  React.createElement(Button, { key: '0', onClick: () => handleNumber(0), className: getButtonStyle('number') }, '0'),
+                  React.createElement(Button, { key: ',', onClick: handleDecimal, className: getButtonStyle('number') }, ','),
+                  React.createElement(Button, { key: '=', onClick: handleEquals, className: getButtonStyle('operator') }, '=')
+                ])
+            )
+          ]);
+        };
+
+        // Render dell'app
+        ReactDOM.render(React.createElement(Calculator), document.getElementById('root'));
+    </script>
+
     <script>
+        // Registrazione del Service Worker
         if ('serviceWorker' in navigator) {
             window.addEventListener('load', () => {
-                navigator.serviceWorker.register('/sw.js')
+                navigator.serviceWorker.register('sw.js')
                     .then((registration) => {
                         console.log('SW registered: ', registration);
                     })
@@ -32,386 +400,26 @@
                     });
             });
         }
+
+        // Gestione dell'installazione PWA
+        let deferredPrompt;
+        window.addEventListener('beforeinstallprompt', (e) => {
+            e.preventDefault();
+            deferredPrompt = e;
+        });
+
+        // Previene il comportamento di default per il pull-to-refresh
+        document.body.addEventListener('touchstart', e => {
+            if (e.touches.length === 1 && e.touches[0].clientY <= 10) {
+                e.preventDefault();
+            }
+        }, { passive: false });
+
+        document.body.addEventListener('touchmove', e => {
+            if (e.touches.length === 1 && e.touches[0].clientY <= 10) {
+                e.preventDefault();
+            }
+        }, { passive: false });
     </script>
-
-    import React, { useState, useEffect } from 'react';
-
-const Calculator = () => {
-  const [display, setDisplay] = useState('0');
-  const [previousValue, setPreviousValue] = useState(null);
-  const [operation, setOperation] = useState(null);
-  const [waitingForOperand, setWaitingForOperand] = useState(false);
-  const [isLandscape, setIsLandscape] = useState(window.innerWidth > window.innerHeight);
-  const [secretResult, setSecretResult] = useState(null);
-  const [showSecretInput, setShowSecretInput] = useState(false);
-  const [secretInputValue, setSecretInputValue] = useState('');
-
-  useEffect(() => {
-    const handleResize = () => {
-      setIsLandscape(window.innerWidth > window.innerHeight);
-    };
-
-    window.addEventListener('resize', handleResize);
-    return () => window.removeEventListener('resize', handleResize);
-  }, []);
-
-  const handleDoubleClick = () => {
-    setShowSecretInput(true);
-  };
-
-  const setSecretResultValue = () => {
-    if (secretInputValue.trim()) {
-      setSecretResult(parseFloat(secretInputValue.trim()));
-      setDisplay(formatDisplay(secretInputValue.trim()));
-      setShowSecretInput(false);
-      setSecretInputValue('');
-    }
-  };
-
-  const calculate = (firstOperand, secondOperand, operation) => {
-    // Se è impostato un risultato segreto, ritorna sempre quello
-    if (secretResult !== null) {
-      return parseFloat(secretResult);
-    }
-
-    switch (operation) {
-      case '+':
-        return firstOperand + secondOperand;
-      case '-':
-        return firstOperand - secondOperand;
-      case '×':
-        return firstOperand * secondOperand;
-      case '÷':
-        return secondOperand !== 0 ? firstOperand / secondOperand : 0;
-      case '=':
-        return secondOperand;
-      default:
-        return secondOperand;
-    }
-  };
-
-  const handleNumber = (num) => {
-    if (waitingForOperand) {
-      setDisplay(String(num));
-      setWaitingForOperand(false);
-    } else {
-      setDisplay(display === '0' ? String(num) : display + num);
-    }
-  };
-
-  const handleOperator = (nextOperator) => {
-    const inputValue = parseFloat(display);
-
-    if (previousValue === null) {
-      setPreviousValue(inputValue);
-    } else if (operation) {
-      const currentValue = previousValue || 0;
-      const newValue = calculate(currentValue, inputValue, operation);
-
-      setDisplay(formatDisplay(newValue));
-      setPreviousValue(newValue);
-    }
-
-    setWaitingForOperand(true);
-    setOperation(nextOperator);
-  };
-
-  const formatDisplay = (value) => {
-    const str = String(value);
-    // Solo in modalità verticale, se il numero è troppo lungo, usa notazione scientifica
-    if (!isLandscape && str.length > 9) {
-      const num = parseFloat(str);
-      return num.toExponential(3);
-    }
-    // In modalità orizzontale mostra sempre il valore per intero
-    return str;
-  };
-
-  const handleEquals = () => {
-    const inputValue = parseFloat(display);
-
-    if (previousValue !== null && operation) {
-      const newValue = calculate(previousValue, inputValue, operation);
-      setDisplay(formatDisplay(newValue));
-      setPreviousValue(null);
-      setOperation(null);
-      setWaitingForOperand(true);
-    }
-  };
-
-  const handleClear = () => {
-    setDisplay('0');
-    setPreviousValue(null);
-    setOperation(null);
-    setWaitingForOperand(false);
-  };
-
-  const handlePercent = () => {
-    const value = parseFloat(display);
-    const result = value / 100;
-    setDisplay(formatDisplay(result));
-  };
-
-  const handlePlusMinus = () => {
-    const value = parseFloat(display);
-    const result = value * -1;
-    setDisplay(formatDisplay(result));
-  };
-
-  const handleDecimal = () => {
-    if (waitingForOperand) {
-      setDisplay('0.');
-      setWaitingForOperand(false);
-    } else if (display.indexOf('.') === -1) {
-      setDisplay(display + '.');
-    }
-  };
-
-  const CalcIcon = () => (
-    <svg width="36" height="44" viewBox="0 0 24 30" fill="currentColor">
-      {/* Rettangolo bianco principale */}
-      <rect x="5" y="4" width="14" height="22" rx="2" fill="white"/>
-      {/* Display superiore (1/6 dell'altezza) - molto più corposo */}
-      <rect x="6.5" y="5.5" width="11" height="4" rx="1" fill="black"/>
-      {/* 9 cerchi per i tasti (3x3) - più corposi */}
-      <circle cx="8" cy="13" r="1.5" fill="black"/>
-      <circle cx="12" cy="13" r="1.5" fill="black"/>
-      <circle cx="16" cy="13" r="1.5" fill="black"/>
-      <circle cx="8" cy="17" r="1.5" fill="black"/>
-      <circle cx="12" cy="17" r="1.5" fill="black"/>
-      <circle cx="16" cy="17" r="1.5" fill="black"/>
-      <circle cx="8" cy="21" r="1.5" fill="black"/>
-      <circle cx="12" cy="21" r="1.5" fill="black"/>
-      <circle cx="16" cy="21" r="1.5" fill="black"/>
-    </svg>
-  );
-
-  const Button = ({ onClick, className, children, span = 1 }) => (
-    <button
-      onClick={onClick}
-      className={`${className} rounded-full font-normal text-3xl transition-all duration-150 active:scale-95 aspect-square ${
-        span === 2 ? 'col-span-2 aspect-auto' : ''
-      }`}
-    >
-      {children}
-    </button>
-  );
-
-  const portraitButtons = [
-    [
-      { text: 'AC', action: handleClear, type: 'function' },
-      { text: '+/-', action: handlePlusMinus, type: 'function' },
-      { text: '%', action: handlePercent, type: 'function' },
-      { text: '÷', action: () => handleOperator('÷'), type: 'operator' }
-    ],
-    [
-      { text: '7', action: () => handleNumber(7), type: 'number' },
-      { text: '8', action: () => handleNumber(8), type: 'number' },
-      { text: '9', action: () => handleNumber(9), type: 'number' },
-      { text: '×', action: () => handleOperator('×'), type: 'operator' }
-    ],
-    [
-      { text: '4', action: () => handleNumber(4), type: 'number' },
-      { text: '5', action: () => handleNumber(5), type: 'number' },
-      { text: '6', action: () => handleNumber(6), type: 'number' },
-      { text: '-', action: () => handleOperator('-'), type: 'operator' }
-    ],
-    [
-      { text: '1', action: () => handleNumber(1), type: 'number' },
-      { text: '2', action: () => handleNumber(2), type: 'number' },
-      { text: '3', action: () => handleNumber(3), type: 'number' },
-      { text: '+', action: () => handleOperator('+'), type: 'operator' }
-    ],
-    [
-      { text: <CalcIcon />, action: () => {}, type: 'calc-icon' },
-      { text: '0', action: () => handleNumber(0), type: 'number' },
-      { text: ',', action: handleDecimal, type: 'number' },
-      { text: '=', action: handleEquals, type: 'operator' }
-    ]
-  ];
-
-  // Disposizione per modalità orizzontale: 5 colonne verticali
-  const landscapeColumns = [
-    // Colonna 1: 7, 4, 1, CalcIcon
-    [
-      { text: '7', action: () => handleNumber(7), type: 'number' },
-      { text: '4', action: () => handleNumber(4), type: 'number' },
-      { text: '1', action: () => handleNumber(1), type: 'number' },
-      { text: <CalcIcon />, action: () => {}, type: 'calc-icon' }
-    ],
-    // Colonna 2: 8, 5, 2, 0
-    [
-      { text: '8', action: () => handleNumber(8), type: 'number' },
-      { text: '5', action: () => handleNumber(5), type: 'number' },
-      { text: '2', action: () => handleNumber(2), type: 'number' },
-      { text: '0', action: () => handleNumber(0), type: 'number' }
-    ],
-    // Colonna 3: 9, 6, 3, virgola
-    [
-      { text: '9', action: () => handleNumber(9), type: 'number' },
-      { text: '6', action: () => handleNumber(6), type: 'number' },
-      { text: '3', action: () => handleNumber(3), type: 'number' },
-      { text: ',', action: handleDecimal, type: 'number' }
-    ],
-    // Colonna 4: AC, +/-, %, =
-    [
-      { text: 'AC', action: handleClear, type: 'function' },
-      { text: '+/-', action: handlePlusMinus, type: 'function' },
-      { text: '%', action: handlePercent, type: 'function' },
-      { text: '=', action: handleEquals, type: 'operator' }
-    ],
-    // Colonna 5: ÷, ×, -, +
-    [
-      { text: '÷', action: () => handleOperator('÷'), type: 'operator' },
-      { text: '×', action: () => handleOperator('×'), type: 'operator' },
-      { text: '-', action: () => handleOperator('-'), type: 'operator' },
-      { text: '+', action: () => handleOperator('+'), type: 'operator' }
-    ]
-  ];
-
-  const getButtonStyle = (type) => {
-    switch (type) {
-      case 'operator':
-        return 'bg-amber-500 hover:bg-amber-400 text-white text-5xl font-light shadow-lg flex items-center justify-center';
-      case 'function':
-        return 'bg-gray-500 hover:bg-gray-400 text-white flex items-center justify-center';
-      case 'number':
-        return 'bg-gray-700 hover:bg-gray-600 text-white flex items-center justify-center';
-      case 'calc-icon':
-        return 'bg-gray-700 hover:bg-gray-600 text-white flex items-center justify-center';
-      default:
-        return 'bg-gray-700 hover:bg-gray-600 text-white flex items-center justify-center';
-    }
-  };
-
-  if (showSecretInput) {
-    return (
-      <div className="h-screen w-screen bg-black flex items-center justify-center p-4 fixed inset-0" style={{
-        paddingTop: 'env(safe-area-inset-top)',
-        paddingRight: 'env(safe-area-inset-right)',
-        paddingBottom: 'env(safe-area-inset-bottom)',
-        paddingLeft: 'env(safe-area-inset-left)'
-      }}>
-        <div className="bg-gray-800 p-6 rounded-lg max-w-sm w-full">
-          <h3 className="text-white text-lg mb-4">Imposta risultato segreto:</h3>
-          <input
-            type="text"
-            value={secretInputValue}
-            onChange={(e) => setSecretInputValue(e.target.value)}
-            className="w-full p-2 rounded bg-gray-700 text-white mb-4"
-            placeholder="Inserisci il risultato..."
-            autoFocus
-          />
-          <div className="flex gap-2">
-            <button
-              onClick={setSecretResultValue}
-              className="flex-1 bg-orange-500 text-white p-2 rounded hover:bg-orange-400"
-            >
-              Imposta
-            </button>
-            <button
-              onClick={() => setShowSecretInput(false)}
-              className="flex-1 bg-gray-600 text-white p-2 rounded hover:bg-gray-500"
-            >
-              Annulla
-            </button>
-          </div>
-        </div>
-      </div>
-    );
-  }
-
-  return (
-    <div 
-      className="h-screen w-screen bg-black flex flex-col overflow-hidden fixed inset-0"
-      style={{
-        paddingTop: 'env(safe-area-inset-top)',
-        paddingRight: 'env(safe-area-inset-right)',
-        paddingBottom: 'env(safe-area-inset-bottom)',
-        paddingLeft: 'env(safe-area-inset-left)'
-      }}
-    >
-      {/* Display */}
-      <div 
-        className={`flex-1 flex items-end justify-end px-6 pb-4`}
-        onDoubleClick={handleDoubleClick}
-      >
-        <div className="text-white text-right">
-          <div className={`${isLandscape ? 'text-5xl' : 'text-7xl'} font-medium`} style={{
-            fontWeight: '500'
-          }}>
-            {display}
-          </div>
-        </div>
-      </div>
-
-      {/* Buttons */}
-      <div className="flex-none p-4 pb-10">
-        {isLandscape ? (
-          // Modalità orizzontale: 5 colonne verticali
-          <div className="grid grid-cols-5 gap-3 h-full">
-            {/* Colonna 1: 7, 4, 1, CalcIcon */}
-            <div className="flex flex-col gap-3">
-              <Button onClick={() => handleNumber(7)} className={getButtonStyle('number')}>7</Button>
-              <Button onClick={() => handleNumber(4)} className={getButtonStyle('number')}>4</Button>
-              <Button onClick={() => handleNumber(1)} className={getButtonStyle('number')}>1</Button>
-              <Button onClick={() => {}} className={getButtonStyle('calc-icon')}><CalcIcon /></Button>
-            </div>
-            
-            {/* Colonna 2: 8, 5, 2, 0 */}
-            <div className="flex flex-col gap-3">
-              <Button onClick={() => handleNumber(8)} className={getButtonStyle('number')}>8</Button>
-              <Button onClick={() => handleNumber(5)} className={getButtonStyle('number')}>5</Button>
-              <Button onClick={() => handleNumber(2)} className={getButtonStyle('number')}>2</Button>
-              <Button onClick={() => handleNumber(0)} className={getButtonStyle('number')}>0</Button>
-            </div>
-            
-            {/* Colonna 3: 9, 6, 3, virgola */}
-            <div className="flex flex-col gap-3">
-              <Button onClick={() => handleNumber(9)} className={getButtonStyle('number')}>9</Button>
-              <Button onClick={() => handleNumber(6)} className={getButtonStyle('number')}>6</Button>
-              <Button onClick={() => handleNumber(3)} className={getButtonStyle('number')}>3</Button>
-              <Button onClick={handleDecimal} className={getButtonStyle('number')}>,</Button>
-            </div>
-            
-            {/* Colonna 4: AC, +/-, %, = */}
-            <div className="flex flex-col gap-3">
-              <Button onClick={handleClear} className={getButtonStyle('function')}>AC</Button>
-              <Button onClick={handlePlusMinus} className={getButtonStyle('function')}>+/-</Button>
-              <Button onClick={handlePercent} className={getButtonStyle('function')}>%</Button>
-              <Button onClick={handleEquals} className={getButtonStyle('operator')}>=</Button>
-            </div>
-            
-            {/* Colonna 5: ÷, ×, -, + */}
-            <div className="flex flex-col gap-3">
-              <Button onClick={() => handleOperator('÷')} className={getButtonStyle('operator')}>÷</Button>
-              <Button onClick={() => handleOperator('×')} className={getButtonStyle('operator')}>×</Button>
-              <Button onClick={() => handleOperator('-')} className={getButtonStyle('operator')}>-</Button>
-              <Button onClick={() => handleOperator('+')} className={getButtonStyle('operator')}>+</Button>
-            </div>
-          </div>
-        ) : (
-          // Modalità verticale: griglia normale
-          <div className="grid grid-cols-4 gap-3">
-            {portraitButtons.map((row, rowIndex) =>
-              row.map((button, colIndex) => (
-                <Button
-                  key={`${rowIndex}-${colIndex}`}
-                  onClick={button.action}
-                  className={getButtonStyle(button.type)}
-                  span={button.span}
-                >
-                  {button.text}
-                </Button>
-              ))
-            )}
-          </div>
-        )}
-      </div>
-    </div>
-  );
-};
-
-export default Calculator;
-          </body>
+</body>
 </html>

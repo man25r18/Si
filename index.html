@@ -160,12 +160,16 @@
 
             if (previousValue === null) {
               setPreviousValue(inputValue);
+              setOperationDisplay(`${inputValue} ${nextOperator} `);
             } else if (operation) {
               const currentValue = previousValue || 0;
               const newValue = calculate(currentValue, inputValue, operation);
 
               setDisplay(formatDisplay(newValue));
               setPreviousValue(newValue);
+              setOperationDisplay(op => `${op}${inputValue} ${nextOperator} `);
+            } else {
+              setOperationDisplay(op => `${op}${inputValue} ${nextOperator} `);
             }
 
             setWaitingForOperand(true);
@@ -194,7 +198,7 @@
               setPreviousValue(null);
               setOperation(null);
               setWaitingForOperand(true);
-              setLastOperation(operationDisplay + inputValue + ' =');
+              setLastOperation(`${operationDisplay}${inputValue} =`);
               setOperationDisplay('');
             }
           };
@@ -327,16 +331,40 @@
              onDoubleClick: handleDoubleClick,
              onTouchEnd: handleTouchEnd
            },
-             lastOperation && React.createElement('div', {
-               className: "text-xs mb-1",
-               style: { color: '#e5e7eb' }
-             }, lastOperation),
-             React.createElement('div', { className: "text-white text-right" },
-               React.createElement('div', {
-                 className: `${isLandscape ? 'text-5xl' : 'text-7xl'} font-medium`,
-                 style: { fontWeight: '500' }
-               }, display)
-             )
+             // Mostra l'operazione corrente sempre sopra il risultato
+React.createElement('div', {
+  style: {
+    minHeight: '1.5em',
+    color: '#e5e7eb',
+    width: '100%',
+    display: 'flex',
+    justifyContent: 'flex-end',
+    alignItems: 'center',
+    overflowX: 'auto',
+    fontSize: operationDisplay.length > 28 ? '0.8em' : (operationDisplay.length > 18 ? '1em' : '1.25em'),
+    transition: 'font-size 0.2s'
+  }
+}, operationDisplay),
+
+// Mostra l'ultima operazione sopra l'operazione corrente, solo dopo "="
+lastOperation && React.createElement('div', {
+  style: {
+    color: '#b7b7b7',
+    fontSize: '0.9em',
+    marginBottom: '0.15em',
+    width: '100%',
+    display: 'flex',
+    justifyContent: 'flex-end'
+  }
+}, lastOperation),
+
+// Il risultato
+React.createElement('div', { className: "text-white text-right", style: { width: '100%' } },
+  React.createElement('div', {
+    className: `${isLandscape ? 'text-5xl' : 'text-7xl'} font-medium`,
+    style: { fontWeight: '500', wordBreak: 'break-all' }
+  }, display)
+)
           ),
             
             // Buttons

@@ -78,7 +78,7 @@ self.addEventListener('fetch', (event) => {
           // Se la rete non è disponibile e la risorsa non è in cache,
           // restituisci una risposta di fallback per le pagine HTML
           if (event.request.destination === 'document') {
-            return caches.match('/index.html');
+            return caches.match(location.pathname.startsWith('/Si/') ? '/Si/index.html' : '/index.html');
           }
         });
       })

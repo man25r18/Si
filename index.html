@@ -154,11 +154,11 @@
   if (waitingForOperand) {
     setDisplay(String(num));
     setWaitingForOperand(false);
-    // Non aggiungere il numero qui alla operationString
+    setOperationString(prev => prev + String(num)); // Aggiungi qui solo la cifra, non duplicare altrove
   } else {
     setDisplay(display === '0' ? String(num) : display + num);
+    setOperationString(prev => prev + String(num));
   }
-  setOperationString(prev => prev + String(num)); // Sposta qui l'aggiornamento della operationString
 };
 
           const handleOperator = (nextOperator) => {
@@ -171,7 +171,7 @@
     const newValue = calculate(previousValue, inputValue, operation);
     setPreviousValue(newValue);
     setDisplay(formatDisplay(newValue));
-    // Aggiungi l'input value prima del nuovo operatore
+    // AGGIUNGI SOLO L'OPERATORE, NON l'inputValue o display
     setOperationString(prev => prev + ' ' + nextOperator + ' ');
   } else {
     setOperationString(prev => prev + ' ' + nextOperator + ' ');
@@ -196,12 +196,13 @@
   const inputValue = parseFloat(display);
   if (previousValue !== null && operation) {
     const newValue = calculate(previousValue, inputValue, operation);
-    setLastOperation(operationString + inputValue + ' =');
+    // NON aggiungere di nuovo la cifra, è già presente
+    setLastOperation(operationString + ' =');
     setDisplay(formatDisplay(newValue));
     setPreviousValue(null);
     setOperation(null);
     setWaitingForOperand(true);
-    setOperationString(''); // <--- azzera operationString
+    setOperationString('');
   }
 };
 

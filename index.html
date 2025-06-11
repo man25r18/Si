@@ -9,7 +9,7 @@
     <meta name="description" content="Calcolatrice moderna con funzionalità segrete">
     <meta name="theme-color" content="#000000">
     <meta name="apple-mobile-web-app-capable" content="yes">
-    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black">
     <meta name="apple-mobile-web-app-title" content="Calcolatrice">
     <meta name="mobile-web-app-capable" content="yes">
     
@@ -29,8 +29,14 @@
     <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
     
     <style>
+        html, body, #root {
+          height: 100%;
+          min-height: 100vh;
+          background: #000 !important;
+        }
         /* Nasconde la barra degli indirizzi sui dispositivi mobili */
         body {
+            overscroll-behavior: none;
             margin: 0;
             padding: 0;
             overflow: hidden;

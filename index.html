@@ -247,13 +247,13 @@ const handleTouchEnd = (e) => {
             }
           };
 
-          const CalcIcon = () => (
-            React.createElement('svg', {
-              width: "36",
-              height: "44", 
-              viewBox: "0 0 24 30",
-              fill: "currentColor"
-            }, [
+          const CalcIcon = ({ landscape }) => (
+  React.createElement('svg', {
+    width: landscape ? "18" : "36",
+    height: landscape ? "22" : "44",
+    viewBox: "0 0 24 30",
+    fill: "currentColor"
+  }, [
               React.createElement('rect', { key: 'main', x: "5", y: "4", width: "14", height: "22", rx: "2", fill: "white"}),
               React.createElement('rect', { key: 'display', x: "6.5", y: "5.5", width: "11", height: "4", rx: "1", fill: "black"}),
               React.createElement('circle', { key: 'c1', cx: "8", cy: "13", r: "1.5", fill: "black"}),
@@ -269,11 +269,16 @@ const handleTouchEnd = (e) => {
           );
 
           // Modifica il componente Button
-const Button = ({ onClick, className, children, span = 1, landscape }) => (
+const Button = ({ onClick, className, children, span = 1, landscape, type }) => (
   React.createElement('button', {
     onClick: onClick,
-    // Modifica solo il text-2xl nel caso landscape, mantenendo text-3xl per portrait
-    className: `${className} font-normal ${landscape ? 'text-base' : 'text-3xl'} transition-all duration-150 active:scale-95
+    className: `${className} font-normal 
+      ${
+        landscape 
+        ? (type === 'operator' ? 'text-3xl' : 'text-base')
+        : 'text-3xl'
+      }
+      transition-all duration-150 active:scale-95
       ${landscape ? 'rounded-[999px] h-[46px] w-full min-h-0' : 'rounded-full aspect-square'}
       ${span === 2 ? 'col-span-2 aspect-auto' : ''}`
   }, children)
@@ -391,7 +396,7 @@ React.createElement('div', {
                     React.createElement(Button, { key: '7', onClick: () => handleNumber(7), className: getButtonStyle('number'), landscape: true }, '7'),
                     React.createElement(Button, { key: '4', onClick: () => handleNumber(4), className: getButtonStyle('number'), landscape: true }, '4'),
                     React.createElement(Button, { key: '1', onClick: () => handleNumber(1), className: getButtonStyle('number'), landscape: true }, '1'),
-                    React.createElement(Button, { key: 'icon', onClick: () => {}, className: getButtonStyle('calc-icon'), landscape: true }, React.createElement(CalcIcon))
+                    React.createElement(Button, { key: 'icon', onClick: () => {}, className: getButtonStyle('calc-icon'), landscape: true }, React.createElement(CalcIcon, { landscape: true }))
                   ]),
                   // Colonna 2
                   React.createElement('div', { key: 'col2', className: "flex flex-col gap-3" }, [
@@ -412,14 +417,14 @@ React.createElement('div', {
                     React.createElement(Button, { key: 'AC', onClick: handleClear, className: getButtonStyle('function'), landscape: true }, 'AC'),
                     React.createElement(Button, { key: '+-', onClick: handlePlusMinus, className: getButtonStyle('function'), landscape: true }, '+/-'),
                     React.createElement(Button, { key: '%', onClick: handlePercent, className: getButtonStyle('function'), landscape: true }, '%'),
-                    React.createElement(Button, { key: '=', onClick: handleEquals, className: getButtonStyle('operator'), landscape: true }, '=')
+                    React.createElement(Button, { key: '=', onClick: handleEquals, className: getButtonStyle('operator'), landscape: true, type: 'operator' }, '=')
                   ]),
                   // Colonna 5
                   React.createElement('div', { key: 'col5', className: "flex flex-col gap-3" }, [
-                    React.createElement(Button, { key: '÷', onClick: () => handleOperator('÷'), className: getButtonStyle('operator'), landscape: true }, '÷'),
-                    React.createElement(Button, { key: '×', onClick: () => handleOperator('×'), className: getButtonStyle('operator'), landscape: true }, '×'),
-                    React.createElement(Button, { key: '-', onClick: () => handleOperator('-'), className: getButtonStyle('operator'), landscape: true }, '-'),
-                    React.createElement(Button, { key: '+', onClick: () => handleOperator('+'), className: getButtonStyle('operator'), landscape: true }, '+')
+                    React.createElement(Button, { key: '÷', onClick: () => handleOperator('÷'), className: getButtonStyle('operator'), landscape: true, type: 'operator' } '÷'),
+                    React.createElement(Button, { key: '×', onClick: () => handleOperator('×'), className: getButtonStyle('operator'), landscape: true, type: 'operator' }, '×'),
+                    React.createElement(Button, { key: '-', onClick: () => handleOperator('-'), className: getButtonStyle('operator'), landscape: true, type: 'operator' }, '-'),
+                    React.createElement(Button, { key: '+', onClick: () => handleOperator('+'), className: getButtonStyle('operator'), landscape: true, type: 'operator' }, '+')
                   ])
                 ])
               :
@@ -446,7 +451,7 @@ React.createElement('div', {
                   React.createElement(Button, { key: '3', onClick: () => handleNumber(3), className: getButtonStyle('number') }, '3'),
                   React.createElement(Button, { key: '+', onClick: () => handleOperator('+'), className: getButtonStyle('operator') }, '+'),
                   // Riga 5
-                  React.createElement(Button, { key: 'icon', onClick: () => {}, className: getButtonStyle('calc-icon') }, React.createElement(CalcIcon)),
+                  React.createElement(Button, { key: 'icon', onClick: () => {}, className: getButtonStyle('calc-icon') }, React.createElement(CalcIcon, { landscape: false })),
                   React.createElement(Button, { key: '0', onClick: () => handleNumber(0), className: getButtonStyle('number') }, '0'),
                   React.createElement(Button, { key: ',', onClick: handleDecimal, className: getButtonStyle('number') }, ','),
                   React.createElement(Button, { key: '=', onClick: handleEquals, className: getButtonStyle('operator') }, '=')

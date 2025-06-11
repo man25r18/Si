@@ -24,8 +24,8 @@
     <script src="https://cdn.tailwindcss.com"></script>
     
     <!-- React e Babel -->
-    <script crossorigin src="https://unpkg.com/react@18/umd/react.production.min.js"></script>
-    <script crossorigin src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js"></script>
+    <script src="https://unpkg.com/react@18/umd/react.production.min.js"></script>
+    <script src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js"></script>
     <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
     
     <style>
@@ -84,9 +84,14 @@
     </style>
 </head>
 <body>
-    <div>Test visibilità</div>
     <div id="root"></div>
-
+    <script>
+        console.log('Root element:', document.getElementById('root'));
+        window.onerror = function(msg, url, lineNo, columnNo, error) {
+            console.error('Error: ' + msg + '\nURL: ' + url + '\nLine: ' + lineNo + '\nColumn: ' + columnNo + '\nError object: ' + JSON.stringify(error));
+            return false;
+        };
+    </script>
     <script type="text/babel">
         // Il tuo componente Calculator qui
         const { useState, useEffect } = React;
@@ -116,7 +121,6 @@
           }, []);
 
           const DOUBLE_TAP_DELAY = 300; // ms
-const [lastTap, setLastTap] = useState(0);
 
 const handleTouchEnd = (e) => {
   const now = Date.now();
@@ -450,7 +454,12 @@ React.createElement('div', {
         };
 
         // Render dell'app
-        ReactDOM.render(React.createElement(Calculator), document.getElementById('root'));
+        const rootElement = document.getElementById('root');
+if (rootElement) {
+    ReactDOM.render(React.createElement(Calculator), rootElement);
+} else {
+    console.error('Element with id "root" not found');
+}
     </script>
 
     <script>

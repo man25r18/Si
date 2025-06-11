@@ -115,9 +115,16 @@
             return () => window.removeEventListener('resize', handleResize);
           }, []);
 
-          const handleDoubleClick = () => {
-            setShowSecretInput(true);
-          };
+          const DOUBLE_TAP_DELAY = 300; // ms
+const [lastTap, setLastTap] = useState(0);
+
+const handleTouchEnd = (e) => {
+  const now = Date.now();
+  if (now - lastTap < DOUBLE_TAP_DELAY) {
+    setShowSecretInput(true); // doppio tap
+  }
+  setLastTap(now);
+};
 
           const setSecretResultValue = () => {
             if (secretInputValue.trim()) {
@@ -332,11 +339,11 @@
           }, [
             // Display
            React.createElement('div', {
-             key: 'display',
-             className: `flex-1 flex flex-col items-end justify-end px-6 ${isLandscape ? 'pb-2' : 'pb-4'}`,
-             onDoubleClick: handleDoubleClick,
-             onTouchEnd: handleTouchEnd
-           },
+  key: 'display',
+  className: `flex-1 flex flex-col items-end justify-end px-6 ${isLandscape ? 'pb-2' : 'pb-4'}`,
+  // RIMUOVI onDoubleClick!
+  onTouchEnd: handleTouchEnd
+},
 
 // Mostra l'ultima operazione sopra l'operazione corrente, solo dopo "="
 // Prima del tasto uguale, mostra l’operazione in corso

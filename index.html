@@ -91,7 +91,8 @@
           const [lastTap, setLastTap] = useState(0);
           const [operationDisplay, setOperationDisplay] = useState('');
           const [lastOperation, setLastOperation] = useState('');
-          
+          const handleTouchEnd = () => {};
+            
           useEffect(() => {
             const handleResize = () => {
               setIsLandscape(window.innerWidth > window.innerHeight);

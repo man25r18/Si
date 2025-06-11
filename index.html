@@ -200,18 +200,19 @@
     setPreviousValue(null);
     setOperation(null);
     setWaitingForOperand(true);
-    setOperationString('');
+    setOperationString(''); // <--- azzera operationString
   }
 };
 
           const handleClear = () => {
-            setDisplay('0');
-            setPreviousValue(null);
-            setOperation(null);
-            setWaitingForOperand(false);
-            setOperationDisplay('');     // Reset dello storico corrente
-            setLastOperation('');        // Reset dello storico finale
-          };
+  setDisplay('0');
+  setPreviousValue(null);
+  setOperation(null);
+  setWaitingForOperand(false);
+  setOperationDisplay('');
+  setLastOperation('');        // Reset dello storico finale
+  setOperationString('');      // Reset dell’operazione corrente
+};
 
           const handlePercent = () => {
             const value = parseFloat(display);

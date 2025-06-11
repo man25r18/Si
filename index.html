@@ -118,6 +118,7 @@
           const DOUBLE_TAP_DELAY = 300; // ms
 const [lastTap, setLastTap] = useState(0);
 
+const handleTouchEnd = (e) => {
   const now = Date.now();
   if (now - lastTap < DOUBLE_TAP_DELAY) {
     setShowSecretInput(true); // doppio tap

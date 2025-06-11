@@ -268,29 +268,32 @@ const handleTouchEnd = (e) => {
             ])
           );
 
-          const Button = ({ onClick, className, children, span = 1, landscape }) => (
+          // Modifica il componente Button
+const Button = ({ onClick, className, children, span = 1, landscape }) => (
   React.createElement('button', {
     onClick: onClick,
-    className: `${className} font-normal ${landscape ? 'text-2xl' : 'text-3xl'} transition-all duration-150 active:scale-95
+    // Modifica solo il text-2xl nel caso landscape, mantenendo text-3xl per portrait
+    className: `${className} font-normal ${landscape ? 'text-base' : 'text-3xl'} transition-all duration-150 active:scale-95
       ${landscape ? 'rounded-[999px] h-[46px] w-full min-h-0' : 'rounded-full aspect-square'}
       ${span === 2 ? 'col-span-2 aspect-auto' : ''}`
   }, children)
 );
 
-          const getButtonStyle = (type) => {
-            switch (type) {
-              case 'operator':
-                return 'bg-amber-500 hover:bg-amber-400 text-white text-5xl font-light shadow-lg flex items-center justify-center';
-              case 'function':
-                return 'bg-gray-500 hover:bg-gray-400 text-white flex items-center justify-center';
-              case 'number':
-                return 'bg-gray-900 hover:bg-gray-800 text-white flex items-center justify-center';
-              case 'calc-icon':
-                return 'bg-gray-900 hover:bg-gray-800 text-white flex items-center justify-center';
-              default:
-                return 'bg-gray-700 hover:bg-gray-600 text-white flex items-center justify-center';
-            }
-          };
+// Il getButtonStyle rimane invariato
+const getButtonStyle = (type) => {
+  switch (type) {
+    case 'operator':
+      return 'bg-amber-500 hover:bg-amber-400 text-white text-5xl font-light shadow-lg flex items-center justify-center';
+    case 'function':
+      return 'bg-gray-500 hover:bg-gray-400 text-white flex items-center justify-center';
+    case 'number':
+      return 'bg-gray-900 hover:bg-gray-800 text-white flex items-center justify-center';
+    case 'calc-icon':
+      return 'bg-gray-900 hover:bg-gray-800 text-white flex items-center justify-center';
+    default:
+      return 'bg-gray-700 hover:bg-gray-600 text-white flex items-center justify-center';
+  }
+};
 
           if (showSecretInput) {
             return React.createElement('div', {

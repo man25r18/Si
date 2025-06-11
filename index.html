@@ -29,6 +29,11 @@
     <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
     
     <style>
+        @media (orientation: landscape) {
+  .landscape-bottom-space {
+    padding-bottom: 2cm !important; /* Cambia 3cm come preferisci */
+  }
+}
         html, body, #root {
           height: 100%;
           min-height: 100vh;
@@ -336,7 +341,7 @@
             React.createElement('div', { key: 'buttons', className: "flex-none p-4 pb-10" },
               isLandscape ? 
                 // Modalità orizzontale
-                React.createElement('div', { className: "grid grid-cols-5 gap-3 h-auto" }, [
+                React.createElement('div', { className: "grid grid-cols-5 gap-3 h-auto landscape-bottom-space" }, [
                   // Colonna 1
                   React.createElement('div', { key: 'col1', className: "flex flex-col gap-3" }, [
                     React.createElement(Button, { key: '7', onClick: () => handleNumber(7), className: getButtonStyle('number'), landscape: true }, '7'),

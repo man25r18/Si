@@ -322,38 +322,38 @@
                 React.createElement('div', { className: "grid grid-cols-5 gap-3 h-full" }, [
                   // Colonna 1
                   React.createElement('div', { key: 'col1', className: "flex flex-col gap-3" }, [
-                    React.createElement(Button, { key: '7', onClick: () => handleNumber(7), className: getButtonStyle('number') }, '7'),
-                    React.createElement(Button, { key: '4', onClick: () => handleNumber(4), className: getButtonStyle('number') }, '4'),
-                    React.createElement(Button, { key: '1', onClick: () => handleNumber(1), className: getButtonStyle('number') }, '1'),
-                    React.createElement(Button, { key: 'icon', onClick: () => {}, className: getButtonStyle('calc-icon') }, React.createElement(CalcIcon))
+                    React.createElement(Button, { key: '7', onClick: () => handleNumber(7), className: getButtonStyle('number'), landscape: true }, '7'),
+                    React.createElement(Button, { key: '4', onClick: () => handleNumber(4), className: getButtonStyle('number'), landscape: true }, '4'),
+                    React.createElement(Button, { key: '1', onClick: () => handleNumber(1), className: getButtonStyle('number'), landscape: true }, '1'),
+                    React.createElement(Button, { key: 'icon', onClick: () => {}, className: getButtonStyle('calc-icon'), landscape: true }, React.createElement(CalcIcon))
                   ]),
                   // Colonna 2
                   React.createElement('div', { key: 'col2', className: "flex flex-col gap-3" }, [
-                    React.createElement(Button, { key: '8', onClick: () => handleNumber(8), className: getButtonStyle('number') }, '8'),
-                    React.createElement(Button, { key: '5', onClick: () => handleNumber(5), className: getButtonStyle('number') }, '5'),
-                    React.createElement(Button, { key: '2', onClick: () => handleNumber(2), className: getButtonStyle('number') }, '2'),
-                    React.createElement(Button, { key: '0', onClick: () => handleNumber(0), className: getButtonStyle('number') }, '0')
+                    React.createElement(Button, { key: '8', onClick: () => handleNumber(8), className: getButtonStyle('number'), landscape: true }, '8'),
+                    React.createElement(Button, { key: '5', onClick: () => handleNumber(5), className: getButtonStyle('number'), landscape: true }, '5'),
+                    React.createElement(Button, { key: '2', onClick: () => handleNumber(2), className: getButtonStyle('number'), landscape: true }, '2'),
+                    React.createElement(Button, { key: '0', onClick: () => handleNumber(0), className: getButtonStyle('number'), landscape: true }, '0')
                   ]),
                   // Colonna 3
                   React.createElement('div', { key: 'col3', className: "flex flex-col gap-3" }, [
-                    React.createElement(Button, { key: '9', onClick: () => handleNumber(9), className: getButtonStyle('number') }, '9'),
-                    React.createElement(Button, { key: '6', onClick: () => handleNumber(6), className: getButtonStyle('number') }, '6'),
-                    React.createElement(Button, { key: '3', onClick: () => handleNumber(3), className: getButtonStyle('number') }, '3'),
-                    React.createElement(Button, { key: ',', onClick: handleDecimal, className: getButtonStyle('number') }, ',')
+                    React.createElement(Button, { key: '9', onClick: () => handleNumber(9), className: getButtonStyle('number'), landscape: true }, '9'),
+                    React.createElement(Button, { key: '6', onClick: () => handleNumber(6), className: getButtonStyle('number'), landscape: true }, '6'),
+                    React.createElement(Button, { key: '3', onClick: () => handleNumber(3), className: getButtonStyle('number'), landscape: true }, '3'),
+                    React.createElement(Button, { key: ',', onClick: handleDecimal, className: getButtonStyle('number'), landscape: true }, ',')
                   ]),
                   // Colonna 4
                   React.createElement('div', { key: 'col4', className: "flex flex-col gap-3" }, [
-                    React.createElement(Button, { key: 'AC', onClick: handleClear, className: getButtonStyle('function') }, 'AC'),
-                    React.createElement(Button, { key: '+-', onClick: handlePlusMinus, className: getButtonStyle('function') }, '+/-'),
-                    React.createElement(Button, { key: '%', onClick: handlePercent, className: getButtonStyle('function') }, '%'),
-                    React.createElement(Button, { key: '=', onClick: handleEquals, className: getButtonStyle('operator') }, '=')
+                    React.createElement(Button, { key: 'AC', onClick: handleClear, className: getButtonStyle('function'), landscape: true }, 'AC'),
+                    React.createElement(Button, { key: '+-', onClick: handlePlusMinus, className: getButtonStyle('function'), landscape: true }, '+/-'),
+                    React.createElement(Button, { key: '%', onClick: handlePercent, className: getButtonStyle('function'), landscape: true }, '%'),
+                    React.createElement(Button, { key: '=', onClick: handleEquals, className: getButtonStyle('operator'), landscape: true }, '=')
                   ]),
                   // Colonna 5
                   React.createElement('div', { key: 'col5', className: "flex flex-col gap-3" }, [
-                    React.createElement(Button, { key: '÷', onClick: () => handleOperator('÷'), className: getButtonStyle('operator') }, '÷'),
-                    React.createElement(Button, { key: '×', onClick: () => handleOperator('×'), className: getButtonStyle('operator') }, '×'),
-                    React.createElement(Button, { key: '-', onClick: () => handleOperator('-'), className: getButtonStyle('operator') }, '-'),
-                    React.createElement(Button, { key: '+', onClick: () => handleOperator('+'), className: getButtonStyle('operator') }, '+')
+                    React.createElement(Button, { key: '÷', onClick: () => handleOperator('÷'), className: getButtonStyle('operator'), landscape: true }, '÷'),
+                    React.createElement(Button, { key: '×', onClick: () => handleOperator('×'), className: getButtonStyle('operator'), landscape: true }, '×'),
+                    React.createElement(Button, { key: '-', onClick: () => handleOperator('-'), className: getButtonStyle('operator'), landscape: true }, '-'),
+                    React.createElement(Button, { key: '+', onClick: () => handleOperator('+'), className: getButtonStyle('operator'), landscape: true }, '+')
                   ])
                 ])
               :

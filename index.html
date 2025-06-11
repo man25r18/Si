@@ -154,11 +154,11 @@
   if (waitingForOperand) {
     setDisplay(String(num));
     setWaitingForOperand(false);
-    setOperationString(prev => prev + String(num));
+    // Non aggiungere il numero qui alla operationString
   } else {
     setDisplay(display === '0' ? String(num) : display + num);
-    setOperationString(prev => prev + String(num));
   }
+  setOperationString(prev => prev + String(num)); // Sposta qui l'aggiornamento della operationString
 };
 
           const handleOperator = (nextOperator) => {
@@ -171,9 +171,10 @@
     const newValue = calculate(previousValue, inputValue, operation);
     setPreviousValue(newValue);
     setDisplay(formatDisplay(newValue));
-    setOperationString(prev => prev + nextOperator + ' ');
+    // Aggiungi l'input value prima del nuovo operatore
+    setOperationString(prev => prev + ' ' + nextOperator + ' ');
   } else {
-    setOperationString(prev => prev + nextOperator + ' ');
+    setOperationString(prev => prev + ' ' + nextOperator + ' ');
   }
 
   setWaitingForOperand(true);

@@ -163,27 +163,39 @@
           };
 
           const handleOperator = (nextOperator) => {
-            const inputValue = parseFloat(display);
+           const inputValue = parseFloat(display);
 
-            if (previousValue === null) {
-              setPreviousValue(inputValue);
-              setOperationDisplay(`${inputValue} ${nextOperator} `);
-            } else if (operation) {
-              const currentValue = previousValue || 0;
-              const newValue = calculate(currentValue, inputValue, operation);
+  if (previousValue === null) {
+    setPreviousValue(inputValue);
+    setOperationDisplay(`${inputValue} ${nextOperator}`);
+  } else if (operation) {
+    const currentValue = previousValue || 0;
+    const newValue = calculate(currentValue, inputValue, operation);
 
-              setDisplay(formatDisplay(newValue));
-              setPreviousValue(newValue);
-              setOperationDisplay(op => `${op}${inputValue} ${nextOperator} `);
-            } else {
-              setOperationDisplay(op => `${op}${inputValue} ${nextOperator} `);
-            }
+    setDisplay(formatDisplay(newValue));
+    setPreviousValue(newValue);
 
-            setWaitingForOperand(true);
-            setOperation(nextOperator);
+    // Aggiungi solo se l’ultimo carattere NON è un operatore
+    setOperationDisplay(op => {
+      let trimmed = op.trim();
+      if (['+', '-', '×', '÷'].includes(trimmed.slice(-1))) {
+        trimmed = trimmed.slice(0, -1);
+      }
+      return `${trimmed} ${nextOperator}`;
+    });
+  } else {
+    setOperationDisplay(op => {
+      let trimmed = op.trim();
+      if (['+', '-', '×', '÷'].includes(trimmed.slice(-1))) {
+        trimmed = trimmed.slice(0, -1);
+      }
+      return `${trimmed} ${nextOperator}`;
+    });
+  }
 
-            setOperationDisplay(op => op + ' ' + nextOperator + ' ');
-          };
+  setWaitingForOperand(true);
+  setOperation(nextOperator);
+};
 
           const formatDisplay = (value) => {
             const str = String(value);
@@ -215,6 +227,8 @@
             setPreviousValue(null);
             setOperation(null);
             setWaitingForOperand(false);
+            setOperationDisplay('');     // Reset dello storico corrente
+            setLastOperation('');        // Reset dello storico finale
           };
 
           const handlePercent = () => {
@@ -338,20 +352,6 @@
              onDoubleClick: handleDoubleClick,
              onTouchEnd: handleTouchEnd
            },
-             // Mostra l'operazione corrente sempre sopra il risultato
-React.createElement('div', {
-  style: {
-    minHeight: '1.5em',
-    color: '#e5e7eb',
-    width: '100%',
-    display: 'flex',
-    justifyContent: 'flex-end',
-    alignItems: 'center',
-    overflowX: 'auto',
-    fontSize: operationDisplay.length > 28 ? '0.8em' : (operationDisplay.length > 18 ? '1em' : '1.25em'),
-    transition: 'font-size 0.2s'
-  }
-}, operationDisplay),
 
 // Mostra l'ultima operazione sopra l'operazione corrente, solo dopo "="
 lastOperation && React.createElement('div', {
@@ -364,14 +364,27 @@ lastOperation && React.createElement('div', {
     justifyContent: 'flex-end'
   }
 }, lastOperation),
-
-// Il risultato
-React.createElement('div', { className: "text-white text-right", style: { width: '100%' } },
-  React.createElement('div', {
-    className: `${isLandscape ? 'text-5xl' : 'text-7xl'} font-medium`,
-    style: { fontWeight: '500', wordBreak: 'break-all' }
-  }, display)
-)
+React.createElement('div', {
+  className: "text-white text-right w-full",
+  style: {
+    minHeight: '2.5em',
+    display: 'flex',
+    alignItems: 'flex-end',
+    justifyContent: 'flex-end',
+    overflowX: 'auto',
+    fontSize: (() => {
+      // Calcola la lunghezza totale da mostrare
+      const totalLength = (operationDisplay + display).length;
+      if (totalLength > 24) return '1em';
+      if (totalLength > 18) return '1.4em';
+      if (totalLength > 12) return '2em';
+      return isLandscape ? '2.5em' : '3em';
+    })(),
+    transition: 'font-size 0.2s'
+  }
+}, 
+  `${operationDisplay}${display}`
+),
           ),
             
             // Buttons

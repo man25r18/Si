@@ -231,14 +231,14 @@
             ])
           );
 
-          const Button = ({ onClick, className, children, span = 1 }) => (
-            React.createElement('button', {
-              onClick: onClick,
-              className: `${className} rounded-full font-normal text-3xl transition-all duration-150 active:scale-95 aspect-square ${
-                span === 2 ? 'col-span-2 aspect-auto' : ''
-              }`
-            }, children)
-          );
+          const Button = ({ onClick, className, children, span = 1, landscape }) => (
+  React.createElement('button', {
+    onClick: onClick,
+    className: `${className} font-normal text-3xl transition-all duration-150 active:scale-95
+      ${landscape ? 'rounded-[999px] h-[46px] w-full min-h-0' : 'rounded-full aspect-square'}
+      ${span === 2 ? 'col-span-2 aspect-auto' : ''}`
+  }, children)
+);
 
           const getButtonStyle = (type) => {
             switch (type) {

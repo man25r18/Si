@@ -104,6 +104,7 @@
           const [operationDisplay, setOperationDisplay] = useState('');
           const [lastOperation, setLastOperation] = useState('');
           const handleTouchEnd = () => {};
+          const [operationString, setOperationString] = useState('');
             
           useEffect(() => {
             const handleResize = () => {
@@ -150,47 +151,29 @@
           };
 
           const handleNumber = (num) => {
-            if (waitingForOperand) {
-              setDisplay(String(num));
-              setWaitingForOperand(false);
-            } else {
-              setDisplay(display === '0' ? String(num) : display + num);
-              setOperationDisplay(op =>
-                (op === '' || op.endsWith('=')) ? 
-          String(num) : op + String(num)
-              );
-            }
-          };
+  if (waitingForOperand) {
+    setDisplay(String(num));
+    setWaitingForOperand(false);
+    setOperationString(prev => prev + String(num));
+  } else {
+    setDisplay(display === '0' ? String(num) : display + num);
+    setOperationString(prev => prev + String(num));
+  }
+};
 
           const handleOperator = (nextOperator) => {
-           const inputValue = parseFloat(display);
+  const inputValue = parseFloat(display);
 
   if (previousValue === null) {
     setPreviousValue(inputValue);
-    setOperationDisplay(`${inputValue} ${nextOperator}`);
+    setOperationString(display + ' ' + nextOperator + ' ');
   } else if (operation) {
-    const currentValue = previousValue || 0;
-    const newValue = calculate(currentValue, inputValue, operation);
-
-    setDisplay(formatDisplay(newValue));
+    const newValue = calculate(previousValue, inputValue, operation);
     setPreviousValue(newValue);
-
-    // Aggiungi solo se l’ultimo carattere NON è un operatore
-    setOperationDisplay(op => {
-      let trimmed = op.trim();
-      if (['+', '-', '×', '÷'].includes(trimmed.slice(-1))) {
-        trimmed = trimmed.slice(0, -1);
-      }
-      return `${trimmed} ${nextOperator}`;
-    });
+    setDisplay(formatDisplay(newValue));
+    setOperationString(prev => prev + nextOperator + ' ');
   } else {
-    setOperationDisplay(op => {
-      let trimmed = op.trim();
-      if (['+', '-', '×', '÷'].includes(trimmed.slice(-1))) {
-        trimmed = trimmed.slice(0, -1);
-      }
-      return `${trimmed} ${nextOperator}`;
-    });
+    setOperationString(prev => prev + nextOperator + ' ');
   }
 
   setWaitingForOperand(true);
@@ -209,18 +192,17 @@
           };
 
           const handleEquals = () => {
-            const inputValue = parseFloat(display);
-
-            if (previousValue !== null && operation) {
-              const newValue = calculate(previousValue, inputValue, operation);
-              setDisplay(formatDisplay(newValue));
-              setPreviousValue(null);
-              setOperation(null);
-              setWaitingForOperand(true);
-              setLastOperation(`${operationDisplay}${inputValue} =`);
-              setOperationDisplay('');
-            }
-          };
+  const inputValue = parseFloat(display);
+  if (previousValue !== null && operation) {
+    const newValue = calculate(previousValue, inputValue, operation);
+    setLastOperation(operationString + inputValue + ' =');
+    setDisplay(formatDisplay(newValue));
+    setPreviousValue(null);
+    setOperation(null);
+    setWaitingForOperand(true);
+    setOperationString('');
+  }
+};
 
           const handleClear = () => {
             setDisplay('0');
@@ -354,29 +336,32 @@
            },
 
 // Mostra l'ultima operazione sopra l'operazione corrente, solo dopo "="
+// Prima del tasto uguale, mostra l’operazione in corso
+// Dopo il tasto uguale, mostra il risultato e sopra lo storico
+
+// Visualizza lo storico solo se c’è lastOperation, dopo '='
 lastOperation && React.createElement('div', {
   style: {
     color: '#b7b7b7',
-    fontSize: '1.5em',           // Più grande
-    marginBottom: '0',           // Più vicino al display sotto
+    fontSize: '1.5em',
     width: '100%',
     display: 'flex',
     justifyContent: 'flex-end'
   }
 }, lastOperation),
-// Storico sopra (operationDisplay)
-operationDisplay && React.createElement('div', {
+
+// Visualizza operationString solo se non è vuoto, solo PRIMA di '='
+operationString && React.createElement('div', {
   style: {
     color: '#b7b7b7',
     fontSize: '1.2em',
-    marginBottom: '0.05em',
     width: '100%',
     display: 'flex',
     justifyContent: 'flex-end'
   }
-}, operationDisplay),
+}, operationString),
 
-// Valore attuale grande (display)
+// Visualizza display
 React.createElement('div', {
   className: "text-white text-right w-full",
   style: {

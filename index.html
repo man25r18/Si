@@ -12,7 +12,7 @@
     <script src="https://unpkg.com/react-dom@18/umd/react-dom.development.js"></script>
     <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
     <script src="https://cdn.tailwindcss.com"></script>
-    // Aggiungi questo codice subito dopo il caricamento degli script esterni
+    <!-- Aggiungi questo codice subito dopo il caricamento degli script esterni -->
 <script>
 window.addEventListener('load', () => {
     console.log('React loaded:', typeof React !== 'undefined');
@@ -498,9 +498,9 @@ window.addEventListener('load', () => {
                         React.createElement('div', { 
                             className: "grid grid-cols-5 gap-2 h-auto landscape-bottom-space",
                             style: {
-                                marginBottom: 'env(safe-area-inset-bottom)',
-                                maxHeight: 'calc(100vh - env(safe-area-inset-top) - env(safe-area-inset-bottom))'bottom))'
-                            }
+    marginBottom: 'env(safe-area-inset-bottom)',
+    maxHeight: 'calc(100vh - env(safe-area-inset-top) - env(safe-area-inset-bottom))'
+}
                         }, [                       
                             // Colonna 1
                             React.createElement('div', { key: 'col1', className: "flex flex-col gap-3" }, [
@@ -562,7 +562,7 @@ window.addEventListener('load', () => {
                             React.createElement(Button, { key: '3', onClick: () => handleNumber(3), className: getButtonStyle('number') }, '3'),
                             React.createElement(Button, { key: '+', onClick: () => handleOperator('+'), className: getButtonStyle('operator') }, '+'),
                             // Riga 5
-                            React.createElement(Button, { key: 'icon', onClick: () => {}, className: getButtonStyle('calc-icon') }, React.createElement(CalcIcon, { landscape: true })),
+                            React.createElement(Button, { key: 'icon', onClick: () => {}, className: getButtonStyle('calc-icon') }, React.createElement(CalcIcon, { landscape: false })),
                             React.createElement(Button, { key: '0', onClick: () => handleNumber(0), className: getButtonStyle('number') }, '0'),
                             React.createElement(Button, { key: ',', onClick: handleDecimal, className: getButtonStyle('number') }, ','),
                             React.createElement(Button, { key: '=', onClick: handleEquals, className: getButtonStyle('operator') }, '=')
@@ -630,9 +630,9 @@ if ('serviceWorker' in navigator) {
       console.log('Service Worker registered successfully');
     } catch (error) {
       console.log('Service Worker registration failed:', error);
-      // Continua l'esecuzione anche se la registrazione fallisce
     }
   });
+}
 </script>
 </body>
 </html>

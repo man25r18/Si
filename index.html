@@ -28,6 +28,9 @@
     <script src="https://unpkg.com/react-dom@17/umd/react-dom.production.min.js"></script>
     <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
     <script>
+    console.log('React version:', React.version);
+  console.log('ReactDOM version:', ReactDOM.version);
+</script>
   // Verifica che React sia caricato
  <script>
   function checkDependencies() {
@@ -68,7 +71,8 @@
     <style>
         #root {
   min-height: 100vh;
-  background-color: black; /* Sfondo nero di fallback */
+  background-color: #1a1a1a; /* Cambiato da nero a grigio scuro per debug */
+  border: 1px solid red;     /* Aggiungi un bordo rosso per vedere i limiti del root */
 }
 
 /* Stile di fallback per errori di caricamento */
@@ -158,9 +162,10 @@
   }
 
   componentDidCatch(error, errorInfo) {
-    console.error('Errore nel rendering:', error);
-    console.error('Stack dell\'errore:', errorInfo);
-  }
+  console.error('Errore nel rendering:', error);
+  console.error('Stack dell\'errore:', errorInfo);
+  console.log('ErrorBoundary ha catturato un errore'); // <-- riga aggiunta
+}
 
   render() {
     if (this.state.hasError) {
@@ -465,7 +470,7 @@ const getButtonStyle = (type) => {
           }
 
           return React.createElement('div', {
-  className: "h-screen w-screen bg-black flex flex-col overflow-hidden fixed inset-0",
+  className: "h-screen w-screen bg-gray-900 flex flex-col overflow-hidden fixed inset-0",
   style: {
     paddingTop: 'env(safe-area-inset-top)',
     paddingRight: 'env(safe-area-inset-right)',

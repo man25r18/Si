@@ -71,7 +71,16 @@
     <style>
         #root {
   min-height: 100vh;
-  background-color: black; /* Cambiato da nero a grigio scuro per debug */   
+  background-color: black; 
+            display: flex;
+  flex-direction: column;/* Cambiato da nero a grigio scuro per debug */   
+}
+        .text-white {
+  color: #ffffff !important;
+}
+
+.bg-gray-900 {
+  background-color: #111827 !important;
 }
 
 /* Stile di fallback per errori di caricamento */
@@ -197,6 +206,14 @@
           const [operationDisplay, setOperationDisplay] = useState('');
           const [lastOperation, setLastOperation] = useState('');
           const [operationString, setOperationString] = useState('');
+              useEffect(() => {
+    console.log('Calculator rendered');
+    const rootEl = document.getElementById('root');
+    if (rootEl) {
+      console.log('Root element styles:', window.getComputedStyle(rootEl));
+      console.log('Root element innerHTML:', rootEl.innerHTML);
+    }
+  }, []);
         
             const MenuIcon = () => (
     React.createElement('svg', {

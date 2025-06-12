@@ -109,7 +109,48 @@
           const [operationDisplay, setOperationDisplay] = useState('');
           const [lastOperation, setLastOperation] = useState('');
           const [operationString, setOperationString] = useState('');
-            
+        
+            const MenuIcon = () => (
+    React.createElement('svg', {
+      width: "24",
+      height: "24",
+      viewBox: "0 0 24 24",
+      className: "text-amber-500", // Stesso colore dei tasti operatori
+    }, [
+      // Cerchi a sinistra
+      React.createElement('circle', { key: 'c1', cx: "4", cy: "6", r: "1.5", fill: "currentColor" }),
+      React.createElement('circle', { key: 'c2', cx: "4", cy: "12", r: "1.5", fill: "currentColor" }),
+      React.createElement('circle', { key: 'c3', cx: "4", cy: "18", r: "1.5", fill: "currentColor" }),
+      // Linee smussate
+      React.createElement('rect', { 
+        key: 'l1', 
+        x: "8", 
+        y: "5", 
+        width: "12", 
+        height: "2", 
+        rx: "1", 
+        fill: "currentColor" 
+      }),
+      React.createElement('rect', { 
+        key: 'l2', 
+        x: "8", 
+        y: "11", 
+        width: "12", 
+        height: "2", 
+        rx: "1", 
+        fill: "currentColor" 
+      }),
+      React.createElement('rect', { 
+        key: 'l3', 
+        x: "8", 
+        y: "17", 
+        width: "12", 
+        height: "2", 
+        rx: "1", 
+        fill: "currentColor" 
+      })
+    ])
+  );
           useEffect(() => {
             const handleResize = () => {
               setIsLandscape(window.innerWidth > window.innerHeight);
@@ -351,7 +392,47 @@ const getButtonStyle = (type) => {
             // Display
            React.createElement('div', {
   key: 'display',
-  className: `flex-1 flex flex-col items-end justify-end px-6 ${isLandscape ? 'pb-2' : 'pb-4'}`,
+  className: `flex-1 flex flex-col px-6 ${isLandscape ? 'pb-2' : 'pb-4'}`
+}, [
+  // Nuovo contenitore del menu in alto
+  React.createElement('div', {
+    key: 'menu',
+    className: "w-full pt-4 pb-2",
+  }, React.createElement(MenuIcon)),
+  
+  // Elemento spacer flessibile
+  React.createElement('div', {
+    key: 'flex-spacer',
+    className: "flex-1"
+  }),
+  
+  // Display dell'ultima operazione (se esiste)
+  lastOperation && React.createElement('div', {
+    key: 'last-operation',
+    style: {
+      color: '#b7b7b7',
+      fontSize: '1.5em',
+      width: '100%',
+      display: 'flex',
+      justifyContent: 'flex-end'
+    }
+  }, lastOperation),
+
+  // Display principale
+  React.createElement('div', {
+    key: 'main-display',
+    className: "text-white text-right w-full",
+    style: {
+      minHeight: '2.5em',
+      display: 'flex',
+      alignItems: 'flex-end',
+      justifyContent: 'flex-end',
+      overflowX: 'auto',
+      fontSize: isLandscape ? '2.5em' : '3em',
+      transition: 'font-size 0.2s'
+    }
+  }, display)
+])
   // RIMUOVI onDoubleClick!
   onTouchEnd: handleTouchEnd
 },

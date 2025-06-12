@@ -31,42 +31,6 @@
     console.log('React version:', React.version);
   console.log('ReactDOM version:', ReactDOM.version);
 </script>
-  // Verifica che React sia caricato
- <script>
-  function checkDependencies() {
-    if (!window.React) {
-      throw new Error('React non è stato caricato correttamente');
-    }
-    if (!window.ReactDOM) {
-      throw new Error('ReactDOM non è stato caricato correttamente');
-    }
-    if (!window.Babel) {
-      throw new Error('Babel non è stato caricato correttamente');
-    }
-    return true;
-  }
-
-  // Avvia l'app solo se tutte le dipendenze sono caricate
-  try {
-    if (checkDependencies()) {
-      const rootElement = document.getElementById('root');
-      if (rootElement) {
-        ReactDOM.render(
-          React.createElement(ErrorBoundary, null,
-            React.createElement(Calculator)
-          ),
-          rootElement
-        );
-      } else {
-        console.error('Element with id "root" not found');
-      }
-    }
-  } catch (error) {
-    console.error('Errore durante l\'inizializzazione:', error);
-    // Mostra un messaggio di errore all'utente
-    document.body.innerHTML = '<div style="padding: 20px; color: white; background-color: black; text-align: center;">Si è verificato un errore durante il caricamento della calcolatrice. Ricarica la pagina.</div>';
-  }
-</script>
     
     <style>
         #root {

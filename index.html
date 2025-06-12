@@ -29,18 +29,59 @@
     <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
     <script>
   // Verifica che React sia caricato
-  if (!window.React) {
-    console.error('React non è stato caricato correttamente');
+ <script>
+  function checkDependencies() {
+    if (!window.React) {
+      throw new Error('React non è stato caricato correttamente');
+    }
+    if (!window.ReactDOM) {
+      throw new Error('ReactDOM non è stato caricato correttamente');
+    }
+    if (!window.Babel) {
+      throw new Error('Babel non è stato caricato correttamente');
+    }
+    return true;
   }
-  if (!window.ReactDOM) {
-    console.error('ReactDOM non è stato caricato correttamente');
-  }
-  if (!window.Babel) {
-    console.error('Babel non è stato caricato correttamente');
+
+  // Avvia l'app solo se tutte le dipendenze sono caricate
+  try {
+    if (checkDependencies()) {
+      const rootElement = document.getElementById('root');
+      if (rootElement) {
+        ReactDOM.render(
+          React.createElement(ErrorBoundary, null,
+            React.createElement(Calculator)
+          ),
+          rootElement
+        );
+      } else {
+        console.error('Element with id "root" not found');
+      }
+    }
+  } catch (error) {
+    console.error('Errore durante l\'inizializzazione:', error);
+    // Mostra un messaggio di errore all'utente
+    document.body.innerHTML = '<div style="padding: 20px; color: white; background-color: black; text-align: center;">Si è verificato un errore durante il caricamento della calcolatrice. Ricarica la pagina.</div>';
   }
 </script>
     
     <style>
+        #root {
+  min-height: 100vh;
+  background-color: black; /* Sfondo nero di fallback */
+}
+
+/* Stile di fallback per errori di caricamento */
+.error-fallback {
+  padding: 20px;
+  color: white;
+  background-color: black;
+  text-align: center;
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
         @media (orientation: landscape) {
   .landscape-bottom-space {
     padding-bottom: env(safe-area-inset-bottom) !important; 
@@ -560,9 +601,14 @@ React.createElement('div', {
         // Render dell'app
         const rootElement = document.getElementById('root');
 if (rootElement) {
-    ReactDOM.render(React.createElement(Calculator), rootElement);
+    ReactDOM.render(
+        React.createElement(ErrorBoundary, null,
+            React.createElement(Calculator)
+        ),
+        rootElement
+    );
 } else {
-    console.error('Element with id \"root\" not found');
+    console.error('Element with id "root" not found');
 }
     </script>
 

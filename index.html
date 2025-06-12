@@ -12,6 +12,14 @@
     <script src="https://unpkg.com/react-dom@18/umd/react-dom.development.js"></script>
     <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
     <script src="https://cdn.tailwindcss.com"></script>
+    // Aggiungi questo codice subito dopo il caricamento degli script esterni
+<script>
+window.addEventListener('load', () => {
+    console.log('React loaded:', typeof React !== 'undefined');
+    console.log('ReactDOM loaded:', typeof ReactDOM !== 'undefined');
+    console.log('Babel loaded:', typeof Babel !== 'undefined');
+});
+</script>
     
     <style>
         html, body {
@@ -564,29 +572,30 @@
         };
 
         // Render dell'app
-        const rootElement = document.getElementById('root');
-        if (rootElement) {
-            try {
-                console.log('Inizializzazione React...');
-                ReactDOM.render(
-                    React.createElement(ErrorBoundary, null,
-                        React.createElement(Calculator)
-                    ),
-                    rootElement
-                );
-                console.log('React inizializzato con successo');
-            } catch (error) {
-                console.error('Errore durante l\'inizializzazione di React:', error);
-                rootElement.innerHTML = `
-                    <div class="error-fallback">
-                        <div>Errore di inizializzazione</div>
-                        <div style="font-size: 12px; margin-top: 10px; opacity: 0.7;">${error.toString()}</div>
-                    </div>
-                `;
-            }
-        } else {
-            console.error('Element with id "root" not found');
-        }
+        // Modifica il codice di inizializzazione
+const rootElement = document.getElementById('root');
+if (rootElement) {
+    try {
+        console.log('Inizializzazione React...');
+        const root = ReactDOM.createRoot(rootElement);  // Usa createRoot invece di render
+        root.render(
+            React.createElement(ErrorBoundary, null,
+                React.createElement(Calculator)
+            )
+        );
+        console.log('React inizializzato con successo');
+    } catch (error) {
+        console.error('Errore durante l\'inizializzazione di React:', error);
+        rootElement.innerHTML = `
+            <div class="error-fallback">
+                <div>Errore di inizializzazione</div>
+                <div style="font-size: 12px; margin-top: 10px; opacity: 0.7;">${error.toString()}</div>
+            </div>
+        `;
+    }
+} else {
+    console.error('Element with id "root" not found');
+}
     </script>
 
     <script>
@@ -615,9 +624,16 @@
     </script>
     <script>
 if ('serviceWorker' in navigator) {
-  window.addEventListener('load', () => {
-    navigator.serviceWorker.register('service-worker.js');
+  window.addEventListener('load', async () => {
+    try {
+      await navigator.serviceWorker.register('service-worker.js');
+      console.log('Service Worker registered successfully');
+    } catch (error) {
+      console.log('Service Worker registration failed:', error);
+      // Continua l'esecuzione anche se la registrazione fallisce
+    }
   });
+}
 }
 </script>
 </body>

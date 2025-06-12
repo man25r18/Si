@@ -124,8 +124,8 @@
             const [showSecretInput, setShowSecretInput] = useState(false);
             const [secretInputValue, setSecretInputValue] = useState('');
             const [lastTap, setLastTap] = useState(0);
-            const [fullExpression, setFullExpression] = useState('');
-            const [lastResult, setLastResult] = useState('');
+            const [expression, setExpression] = useState('');
+            const [justCalculated, setJustCalculated] = useState(false);
 
             useEffect(() => {
                 console.log('Calculator component mounted');
@@ -215,7 +215,7 @@
                     setDisplay(formatDisplay(value));
                     setShowSecretInput(false);
                     setSecretInputValue('');
-                    setFullExpression('');
+                    setExpression('');
                 }
             };
 
@@ -241,9 +241,10 @@
             };
 
             const handleNumber = (num) => {
-                if (waitingForOperand) {
+                if (waitingForOperand || justCalculated) {
                     setDisplay(String(num));
                     setWaitingForOperand(false);
+                    setJustCalculated(false);
                 } else {
                     setDisplay(display === '0' ? String(num) : display + num);
                 }
@@ -254,22 +255,22 @@
 
                 if (previousValue === null) {
                     setPreviousValue(inputValue);
-                    setFullExpression(display + ' ' + nextOperator + ' ');
+                    setExpression(formatDisplay(inputValue) + ' ' + nextOperator);
                 } else if (operation && !waitingForOperand) {
                     const newValue = calculate(previousValue, inputValue, operation);
                     const result = formatDisplay(newValue);
                     
                     setDisplay(result);
                     setPreviousValue(newValue);
-                    setFullExpression(result + ' ' + nextOperator + ' ');
-                    setLastResult('');
+                    setExpression(result + ' ' + nextOperator);
                 } else {
-                    setFullExpression(display + ' ' + nextOperator + ' ');
+                    setExpression(formatDisplay(inputValue) + ' ' + nextOperator);
                     setPreviousValue(inputValue);
                 }
 
                 setWaitingForOperand(true);
                 setOperation(nextOperator);
+                setJustCalculated(false);
             };
 
             const formatDisplay = (value) => {
@@ -291,14 +292,14 @@
                 if (previousValue !== null && operation) {
                     const newValue = calculate(previousValue, inputValue, operation);
                     const result = formatDisplay(newValue);
-                    const completeExpression = fullExpression + display + ' = ' + result;
                     
+                    // Mostra l'espressione completa con il risultato
+                    setExpression(expression + ' ' + display + ' = ' + result);
                     setDisplay(result);
-                    setLastResult(completeExpression);
-                    setFullExpression('');
                     setPreviousValue(null);
                     setOperation(null);
                     setWaitingForOperand(true);
+                    setJustCalculated(true);
                 }
             };
 
@@ -307,27 +308,30 @@
                 setPreviousValue(null);
                 setOperation(null);
                 setWaitingForOperand(false);
-                setFullExpression('');
-                setLastResult('');
+                setExpression('');
                 setSecretResult(null);
+                setJustCalculated(false);
             };
 
             const handlePercent = () => {
                 const value = parseFloat(display.replace(',', '.'));
                 const result = value / 100;
                 setDisplay(formatDisplay(result));
+                setJustCalculated(false);
             };
 
             const handlePlusMinus = () => {
                 const value = parseFloat(display.replace(',', '.'));
                 const result = value * -1;
                 setDisplay(formatDisplay(result));
+                setJustCalculated(false);
             };
 
             const handleDecimal = () => {
-                if (waitingForOperand) {
+                if (waitingForOperand || justCalculated) {
                     setDisplay('0,');
                     setWaitingForOperand(false);
+                    setJustCalculated(false);
                 } else if (display.indexOf(',') === -1) {
                     setDisplay(display + ',');
                 }
@@ -361,19 +365,6 @@
                     default:
                         return 'bg-gray-700 hover:bg-gray-700 text-white flex items-center justify-center';
                 }
-            };
-
-            // Calcola l'espressione da mostrare
-            const getCurrentExpression = () => {
-                if (lastResult) return lastResult;
-                if (fullExpression) {
-                    if (waitingForOperand) {
-                        return fullExpression;
-                    } else {
-                        return fullExpression + display;
-                    }
-                }
-                return '';
             };
 
             if (showSecretInput) {
@@ -441,7 +432,7 @@
                     }),
                     
                     // Espressione corrente
-                    getCurrentExpression() && React.createElement('div', {
+                    expression && React.createElement('div', {
                         key: 'current-expression',
                         className: "text-gray-400 text-right w-full mb-2",
                         style: {
@@ -451,7 +442,7 @@
                             overflowX: 'auto',
                             whiteSpace: 'nowrap'
                         }
-                    }, getCurrentExpression()),
+                    }, expression),
 
                     // Display principale
                     React.createElement('div', {

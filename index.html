@@ -1,4 +1,3 @@
-
 <!DOCTYPE html>
 <html lang="it">
 <head>
@@ -125,8 +124,8 @@
             const [showSecretInput, setShowSecretInput] = useState(false);
             const [secretInputValue, setSecretInputValue] = useState('');
             const [lastTap, setLastTap] = useState(0);
-            const [operationString, setOperationString] = useState('');
-            const [fullOperation, setFullOperation] = useState('');
+            const [fullExpression, setFullExpression] = useState('');
+            const [lastResult, setLastResult] = useState('');
 
             useEffect(() => {
                 console.log('Calculator component mounted');
@@ -211,16 +210,20 @@
 
             const setSecretResultValue = () => {
                 if (secretInputValue.trim()) {
-                    setSecretResult(parseFloat(secretInputValue.trim()));
-                    setDisplay(formatDisplay(secretInputValue.trim()));
+                    const value = parseFloat(secretInputValue.trim().replace(',', '.'));
+                    setSecretResult(value);
+                    setDisplay(formatDisplay(value));
                     setShowSecretInput(false);
                     setSecretInputValue('');
+                    setFullExpression('');
                 }
             };
 
             const calculate = (firstOperand, secondOperand, operation) => {
                 if (secretResult !== null) {
-                    return parseFloat(secretResult);
+                    const result = parseFloat(secretResult);
+                    setSecretResult(null);
+                    return result;
                 }
 
                 switch (operation) {
@@ -232,8 +235,6 @@
                         return firstOperand * secondOperand;
                     case '÷':
                         return secondOperand !== 0 ? firstOperand / secondOperand : 0;
-                    case '=':
-                        return secondOperand;
                     default:
                         return secondOperand;
                 }
@@ -243,47 +244,28 @@
                 if (waitingForOperand) {
                     setDisplay(String(num));
                     setWaitingForOperand(false);
-                    if (fullOperation && !fullOperation.endsWith(' ')) {
-                        setFullOperation(prev => prev + String(num));
-                    } else {
-                        setFullOperation(prev => prev + String(num));
-                    }
                 } else {
-                    const newDisplay = display === '0' ? String(num) : display + num;
-                    setDisplay(newDisplay);
-                    if (fullOperation && fullOperation.includes(' ')) {
-                        // Stiamo aggiungendo cifre al secondo operando
-                        const parts = fullOperation.split(' ');
-                        if (parts.length >= 3) {
-                            parts[2] = newDisplay;
-                            setFullOperation(parts.join(' '));
-                        } else {
-                            setFullOperation(prev => prev + String(num));
-                        }
-                    } else {
-                        // Stiamo modificando il primo operando
-                        if (fullOperation) {
-                            setFullOperation(newDisplay);
-                        } else {
-                            setFullOperation(newDisplay);
-                        }
-                    }
+                    setDisplay(display === '0' ? String(num) : display + num);
                 }
             };
 
             const handleOperator = (nextOperator) => {
-                const inputValue = parseFloat(display);
+                const inputValue = parseFloat(display.replace(',', '.'));
 
                 if (previousValue === null) {
                     setPreviousValue(inputValue);
-                    setFullOperation(display + ' ' + nextOperator + ' ');
-                } else if (operation) {
+                    setFullExpression(display + ' ' + nextOperator + ' ');
+                } else if (operation && !waitingForOperand) {
                     const newValue = calculate(previousValue, inputValue, operation);
+                    const result = formatDisplay(newValue);
+                    
+                    setDisplay(result);
                     setPreviousValue(newValue);
-                    setDisplay(formatDisplay(newValue));
-                    setFullOperation(formatDisplay(newValue) + ' ' + nextOperator + ' ');
+                    setFullExpression(result + ' ' + nextOperator + ' ');
+                    setLastResult('');
                 } else {
-                    setFullOperation(display + ' ' + nextOperator + ' ');
+                    setFullExpression(display + ' ' + nextOperator + ' ');
+                    setPreviousValue(inputValue);
                 }
 
                 setWaitingForOperand(true);
@@ -291,29 +273,32 @@
             };
 
             const formatDisplay = (value) => {
-                const str = String(value);
+                if (value === null || value === undefined || isNaN(value)) {
+                    return '0';
+                }
+                
+                const str = String(value).replace('.', ',');
                 if (!isLandscape && str.length > 9) {
-                    const num = parseFloat(str);
-                    return num.toExponential(3);
+                    const num = parseFloat(String(value));
+                    return num.toExponential(3).replace('.', ',');
                 }
                 return str;
             };
 
             const handleEquals = () => {
-                const inputValue = parseFloat(display);
+                const inputValue = parseFloat(display.replace(',', '.'));
+                
                 if (previousValue !== null && operation) {
                     const newValue = calculate(previousValue, inputValue, operation);
-                    const completeOperation = fullOperation + ' = ' + formatDisplay(newValue);
-                    setDisplay(formatDisplay(newValue));
+                    const result = formatDisplay(newValue);
+                    const completeExpression = fullExpression + display + ' = ' + result;
+                    
+                    setDisplay(result);
+                    setLastResult(completeExpression);
+                    setFullExpression('');
                     setPreviousValue(null);
                     setOperation(null);
                     setWaitingForOperand(true);
-                    setFullOperation('');
-                    // Salva l'operazione completa per mostrarla brevemente
-                    setTimeout(() => {
-                        setOperationString(completeOperation);
-                        setTimeout(() => setOperationString(''), 3000);
-                    }, 100);
                 }
             };
 
@@ -322,67 +307,29 @@
                 setPreviousValue(null);
                 setOperation(null);
                 setWaitingForOperand(false);
-                setOperationString('');
-                setFullOperation('');
+                setFullExpression('');
+                setLastResult('');
+                setSecretResult(null);
             };
 
             const handlePercent = () => {
-                const value = parseFloat(display);
+                const value = parseFloat(display.replace(',', '.'));
                 const result = value / 100;
-                const newDisplay = formatDisplay(result);
-                setDisplay(newDisplay);
-                // Aggiorna anche l'operazione corrente se presente
-                if (fullOperation.includes(' ')) {
-                    const parts = fullOperation.split(' ');
-                    if (parts.length >= 3) {
-                        parts[2] = newDisplay;
-                        setFullOperation(parts.join(' '));
-                    }
-                } else {
-                    setFullOperation(newDisplay);
-                }
+                setDisplay(formatDisplay(result));
             };
 
             const handlePlusMinus = () => {
-                const value = parseFloat(display);
+                const value = parseFloat(display.replace(',', '.'));
                 const result = value * -1;
-                const newDisplay = formatDisplay(result);
-                setDisplay(newDisplay);
-                // Aggiorna anche l'operazione corrente se presente
-                if (fullOperation.includes(' ')) {
-                    const parts = fullOperation.split(' ');
-                    if (parts.length >= 3) {
-                        parts[2] = newDisplay;
-                        setFullOperation(parts.join(' '));
-                    }
-                } else {
-                    setFullOperation(newDisplay);
-                }
+                setDisplay(formatDisplay(result));
             };
 
             const handleDecimal = () => {
                 if (waitingForOperand) {
                     setDisplay('0,');
                     setWaitingForOperand(false);
-                    setFullOperation(prev => prev + '0,');
                 } else if (display.indexOf(',') === -1) {
-                    const newDisplay = display + ',';
-                    setDisplay(newDisplay);
-                    if (fullOperation.includes(' ')) {
-                        const parts = fullOperation.split(' ');
-                        if (parts.length >= 3) {
-                            parts[2] = newDisplay;
-                            setFullOperation(parts.join(' '));
-                        } else {
-                            setFullOperation(prev => prev + ',');
-                        }
-                    } else {
-                        if (fullOperation) {
-                            setFullOperation(newDisplay);
-                        } else {
-                            setFullOperation(newDisplay);
-                        }
-                    }
+                    setDisplay(display + ',');
                 }
             };
 
@@ -414,6 +361,19 @@
                     default:
                         return 'bg-gray-700 hover:bg-gray-700 text-white flex items-center justify-center';
                 }
+            };
+
+            // Calcola l'espressione da mostrare
+            const getCurrentExpression = () => {
+                if (lastResult) return lastResult;
+                if (fullExpression) {
+                    if (waitingForOperand) {
+                        return fullExpression;
+                    } else {
+                        return fullExpression + display;
+                    }
+                }
+                return '';
             };
 
             if (showSecretInput) {
@@ -480,9 +440,9 @@
                         className: "flex-1"
                     }),
                     
-                    // Operazione in corso
-                    (fullOperation || operationString) && React.createElement('div', {
-                        key: 'current-operation',
+                    // Espressione corrente
+                    getCurrentExpression() && React.createElement('div', {
+                        key: 'current-expression',
                         className: "text-gray-400 text-right w-full mb-2",
                         style: {
                             fontSize: isLandscape ? '1.2em' : '1.5em',
@@ -491,11 +451,11 @@
                             overflowX: 'auto',
                             whiteSpace: 'nowrap'
                         }
-                    }, operationString || fullOperation),
+                    }, getCurrentExpression()),
 
-                    // Current display
+                    // Display principale
                     React.createElement('div', {
-                        key: 'current-display',
+                        key: 'main-display',
                         className: "text-white text-right w-full",
                         style: {
                             minHeight: '2.5em',

@@ -27,6 +27,18 @@
     <script src="https://unpkg.com/react@18/umd/react.production.min.js"></script>
     <script src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js"></script>
     <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+    <script>
+  // Verifica che React sia caricato
+  if (!window.React) {
+    console.error('React non è stato caricato correttamente');
+  }
+  if (!window.ReactDOM) {
+    console.error('ReactDOM non è stato caricato correttamente');
+  }
+  if (!window.Babel) {
+    console.error('Babel non è stato caricato correttamente');
+  }
+</script>
     
     <style>
         @media (orientation: landscape) {
@@ -93,6 +105,37 @@
         };
     </script>
     <script type="text/babel">
+
+        class ErrorBoundary extends React.Component {
+  constructor(props) {
+    super(props);
+    this.state = { hasError: false };
+  }
+
+  static getDerivedStateFromError(error) {
+    return { hasError: true };
+  }
+
+  componentDidCatch(error, errorInfo) {
+    console.error('Errore nel rendering:', error);
+    console.error('Stack dell\'errore:', errorInfo);
+  }
+
+  render() {
+    if (this.state.hasError) {
+      return React.createElement('div', {
+        style: {
+          padding: '20px',
+          color: 'white',
+          backgroundColor: 'black',
+          textAlign: 'center'
+        }
+      }, 'Si è verificato un errore nel caricamento della calcolatrice.');
+    }
+
+    return this.props.children;
+  }
+}
         // Il tuo componente Calculator qui
         const { useState, useEffect } = React;
 
@@ -381,15 +424,15 @@ const getButtonStyle = (type) => {
           }
 
           return React.createElement('div', {
-            className: "h-screen w-screen bg-black flex flex-col overflow-hidden fixed inset-0",
-            style: {
-              paddingTop: 'env(safe-area-inset-top)',
-              paddingRight: 'env(safe-area-inset-right)',
-              paddingBottom: 'env(safe-area-inset-bottom)',
-              paddingLeft: 'env(safe-area-inset-left)'
-            }
-              onTouchEnd: handleTouchEnd
-          }, [
+  className: "h-screen w-screen bg-black flex flex-col overflow-hidden fixed inset-0",
+  style: {
+    paddingTop: 'env(safe-area-inset-top)',
+    paddingRight: 'env(safe-area-inset-right)',
+    paddingBottom: 'env(safe-area-inset-bottom)',
+    paddingLeft: 'env(safe-area-inset-left)'
+  },
+  onTouchEnd: handleTouchEnd  // <-- CORRETTO: aggiunta la virgola e allineato correttamente
+}, [
             // Display
            React.createElement('div', {
   key: 'display',

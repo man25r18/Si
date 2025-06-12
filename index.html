@@ -560,7 +560,7 @@ React.createElement('div', {
         // Render dell'app
         const rootElement = document.getElementById('root');
 if (rootElement) {
-    ReactDOM.createRoot(rootElement).render(React.createElement(Calculator));
+    ReactDOM.render(React.createElement(Calculator), rootElement);
 } else {
     console.error('Element with id \"root\" not found');
 }

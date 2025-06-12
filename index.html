@@ -275,8 +275,8 @@ const Button = ({ onClick, className, children, span = 1, landscape, type }) => 
     className: `${className} font-normal 
       ${
         landscape 
-? (type === 'operator' ? 'text-2xl' : 'text-lg')
-: 'text-3xl'
+          ? (type === 'operator' ? 'text-xl' : 'text-lg') // Ridotto solo in landscape da text-2xl a text-xl
+          : 'text-3xl' // In portrait rimane uguale per tutti i bottoni
       }
       transition-all duration-150 active:scale-95
       ${landscape ? 'rounded-[999px] h-[46px] w-full min-h-0' : 'rounded-full aspect-square'}

@@ -496,12 +496,13 @@ window.addEventListener('load', () => {
 }
                         }, [                       
                             // Colonna 1
+                            // Colonna 1
                             React.createElement('div', { key: 'col1', className: "flex flex-col gap-3" }, [
                                 React.createElement(Button, { key: '7', onClick: () => handleNumber(7), className: getButtonStyle('number'), landscape: true }, '7'),
                                 React.createElement(Button, { key: '4', onClick: () => handleNumber(4), className: getButtonStyle('number'), landscape: true }, '4'),
                                 React.createElement(Button, { key: '1', onClick: () => handleNumber(1), className: getButtonStyle('number'), landscape: true }, '1'),
                                 React.createElement(Button, { key: 'icon', onClick: () => {}, className: getButtonStyle('calc-icon'), landscape: true }, React.createElement(CalcIcon, { landscape: true }))
-                            ]),
+                            ])
                             // Colonna 2
                             React.createElement('div', { key: 'col2', className: "flex flex-col gap-3" }, [
                                 React.createElement(Button, { key: '8', onClick: () => handleNumber(8), className: getButtonStyle('number'), landscape: true }, '8'),

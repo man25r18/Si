@@ -24,8 +24,8 @@
     <script src="https://cdn.tailwindcss.com"></script>
     
     <!-- React e Babel -->
-    <script src="https://unpkg.com/react@18/umd/react.production.min.js"></script>
-    <script src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js"></script>
+    <script src="https://unpkg.com/react@17/umd/react.production.min.js"></script>
+    <script src="https://unpkg.com/react-dom@17/umd/react-dom.production.min.js"></script>
     <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
     <script>
   // Verifica che React sia caricato
@@ -560,9 +560,9 @@ React.createElement('div', {
         // Render dell'app
         const rootElement = document.getElementById('root');
 if (rootElement) {
-    ReactDOM.render(React.createElement(Calculator), rootElement);
+    ReactDOM.createRoot(rootElement).render(React.createElement(Calculator));
 } else {
-    console.error('Element with id "root" not found');
+    console.error('Element with id \"root\" not found');
 }
     </script>
 

@@ -3,6 +3,9 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+    <meta name="apple-mobile-web-app-capable" content="yes"> 
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="theme-color" content="#000000">
     <title>Calcolatrice</title>
     <script src="https://unpkg.com/react@18/umd/react.development.js"></script>
     <script src="https://unpkg.com/react-dom@18/umd/react-dom.development.js"></script>
@@ -15,7 +18,7 @@
     min-height: 100vh;
     margin: 0;
     padding: 0;
-    background-color: #000000 !important!/* <-- Aggiungi questa riga se non c’è */
+    background-color: #000000 !importan;/* <-- Aggiungi questa riga se non c’è */
     width: 100vw;               /* <-- Aggiungi questa riga */
     overflow: hidden;           /* <-- Aggiungi questa riga */
     overscroll-behavior: none;
@@ -29,7 +32,7 @@
 
   #root {
       min-height: 100vh;
-    background-color: #000000 !important!
+    background-color: #000 !important;
     width: 100vw;             /* <-- Aggiungi questa riga */
     max-width: 100vw;         /* <-- Aggiungi questa riga */
     overflow: hidden;         /* <-- Aggiungi questa riga */
@@ -62,6 +65,7 @@
 
         @media (orientation: landscape) {
     .landscape-bottom-space {
+        padding-top: env(safe-area-inset-top);
         padding-left: env(safe-area-inset-left) !important;
         padding-right: env(safe-area-inset-right) !important;
         padding-bottom: env(safe-area-inset-bottom) !important;

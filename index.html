@@ -68,10 +68,17 @@
         padding-top: env(safe-area-inset-top);
         padding-left: env(safe-area-inset-left) !important;
         padding-right: env(safe-area-inset-right) !important;
-        padding-bottom: env(safe-area-inset-bottom) !important;
-        .grid-cols-5 {
-    grid-template-rows: repeat(4, minmax(70px, 1fr)) !important;
-  }
+        padding-bottom: calc(env(safe-area-inset-bottom) + 10px) !important; /* Aumentiamo il padding bottom */
+    }
+    
+    /* Riduciamo leggermente l'altezza dei pulsanti */
+    .grid-cols-5 button {
+        height: 60px !important; /* Riduciamo l'altezza da 70px a 60px */
+    }
+    
+    /* Riduciamo il gap tra i pulsanti */
+    .grid-cols-5 {
+        gap: 8px !important; /* Riduciamo il gap da 12px a 8px */
     }
 }
 
@@ -479,7 +486,13 @@
                 React.createElement('div', { key: 'buttons', className: `flex-none p-4 ${isLandscape ? '' : 'pb-10'}` },
                     isLandscape ? 
                         // Modalità orizzontale
-                        React.createElement('div', { className: "grid grid-cols-5 gap-3 h-auto landscape-bottom-space" }, [
+                        React.createElement('div', { 
+                            className: "grid grid-cols-5 gap-2 h-auto landscape-bottom-space",
+                            style: {
+                                marginBottom: 'env(safe-area-inset-bottom)',
+                                maxHeight: 'calc(100vh - env(safe-area-inset-top) - env(safe-area-inset-bottom))'
+                            }
+},                       }, [
                             // Colonna 1
                             React.createElement('div', { key: 'col1', className: "flex flex-col gap-3" }, [
                                 React.createElement(Button, { key: '7', onClick: () => handleNumber(7), className: getButtonStyle('number'), landscape: true }, '7'),

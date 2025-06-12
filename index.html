@@ -27,7 +27,7 @@ window.addEventListener('load', () => {
     min-height: 100vh;
     margin: 0;
     padding: 0;
-    background-color: #000000 !important;/* <-- Aggiungi questa riga se non c’è */
+    background-color: #000000 !important;/* <-- Aggiungi questa riga se non c'è */
     width: 100vw;               /* <-- Aggiungi questa riga */
     overflow: hidden;           /* <-- Aggiungi questa riga */
     overscroll-behavior: none;
@@ -206,6 +206,7 @@ window.addEventListener('load', () => {
                     })
                 ])
             );
+            
             const handleMenuClick = () => {
                 setShowSecretInput(true);
             };
@@ -447,7 +448,7 @@ window.addEventListener('load', () => {
                         className: "w-full pt-4 pb-2",
                         onClick: handleMenuClick,
                         style: { cursor: 'pointer' }
-                    }, React.createElement(MenuIcon))
+                    }, React.createElement(MenuIcon)),
                     
                     // Spacer
                     React.createElement('div', {
@@ -496,13 +497,12 @@ window.addEventListener('load', () => {
 }
                         }, [                       
                             // Colonna 1
-                            // Colonna 1
                             React.createElement('div', { key: 'col1', className: "flex flex-col gap-3" }, [
                                 React.createElement(Button, { key: '7', onClick: () => handleNumber(7), className: getButtonStyle('number'), landscape: true }, '7'),
                                 React.createElement(Button, { key: '4', onClick: () => handleNumber(4), className: getButtonStyle('number'), landscape: true }, '4'),
                                 React.createElement(Button, { key: '1', onClick: () => handleNumber(1), className: getButtonStyle('number'), landscape: true }, '1'),
                                 React.createElement(Button, { key: 'icon', onClick: () => {}, className: getButtonStyle('calc-icon'), landscape: true }, React.createElement(CalcIcon, { landscape: true }))
-                            ])
+                            ]),
                             // Colonna 2
                             React.createElement('div', { key: 'col2', className: "flex flex-col gap-3" }, [
                                 React.createElement(Button, { key: '8', onClick: () => handleNumber(8), className: getButtonStyle('number'), landscape: true }, '8'),
@@ -565,23 +565,36 @@ window.addEventListener('load', () => {
             ]);
         };
 
-        // Render dell'app
-        // Modifica il codice di inizializzazione
-const rootElement = document.getElementById('root');
-if (rootElement) {
-    try {
-        console.log('Inizializzazione React...');
-        const root = ReactDOM.createRoot(rootElement);  // Usa createRoot invece di render
-        root.render(
-            React.createElement(ErrorBoundary, null,
-                React.createElement(Calculator)
-            )
-        );
-        console.log('React inizializzato con successo');
-    } catch (error) {
-        console.error('Errore durante l\'inizializzazione di React:', error);
-        rootElement.innerHTML = `
-            <div class="error-fallback">
+        // Render dell'app con metodo compatibile
+        const rootElement = document.getElementById('root');
+        if (rootElement) {
+            try {
+                console.log('Inizializzazione React...');
+                
+                // Usa il metodo compatibile per React 18
+                if (ReactDOM.createRoot) {
+                    // React 18+
+                    const root = ReactDOM.createRoot(rootElement);
+                    root.render(
+                        React.createElement(ErrorBoundary, null,
+                            React.createElement(Calculator)
+                        )
+                    );
+                } else {
+                    // React 17 e precedenti
+                    ReactDOM.render(
+                        React.createElement(ErrorBoundary, null,
+                            React.createElement(Calculator)
+                        ),
+                        rootElement
+                    );
+                }
+                
+                console.log('React inizializzato con successo');
+            } catch (error) {
+                console.error('Errore durante l\'inizializzazione di React:', error);
+                rootElement.innerHTML = `
+                    <div class="error-fallback">
                 <div>Errore di inizializzazione</div>
                 <div style="font-size: 12px; margin-top: 10px; opacity: 0.7;">${error.toString()}</div>
             </div>

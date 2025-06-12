@@ -154,7 +154,6 @@ window.addEventListener('load', () => {
             const [secretResult, setSecretResult] = useState(null);
             const [showSecretInput, setShowSecretInput] = useState(false);
             const [secretInputValue, setSecretInputValue] = useState('');
-            const [lastTap, setLastTap] = useState(0);
             const [expression, setExpression] = useState('');
             const [justCalculated, setJustCalculated] = useState(false);
 
@@ -167,16 +166,6 @@ window.addEventListener('load', () => {
                 window.addEventListener('resize', handleResize);
                 return () => window.removeEventListener('resize', handleResize);
             }, []);
-
-            const DOUBLE_TAP_DELAY = 300;
-
-            const handleTouchEnd = (e) => {
-                const now = Date.now();
-                if (now - lastTap < DOUBLE_TAP_DELAY) {
-                    setShowSecretInput(true);
-                }
-                setLastTap(now);
-            };
 
             const MenuIcon = () => (
                 React.createElement('svg', {
@@ -217,7 +206,10 @@ window.addEventListener('load', () => {
                     })
                 ])
             );
-
+            const handleMenuClick = () => {
+                setShowSecretInput(true);
+            };
+            
             const CalcIcon = ({ landscape }) => (
                 React.createElement('svg', {
                     width: landscape ? "18" : "36",
@@ -436,15 +428,14 @@ window.addEventListener('load', () => {
             }
 
             return React.createElement('div', {
-                className: "h-screen w-screen bg-black flex flex-col overflow-hidden fixed inset-0",
-                style: {
-                    paddingTop: 'env(safe-area-inset-top)',
-                    paddingRight: 'env(safe-area-inset-right)',
-                    paddingBottom: 'env(safe-area-inset-bottom)',
-                    paddingLeft: 'env(safe-area-inset-left)'
-                },
-                onTouchEnd: handleTouchEnd
-            }, [
+                        className: "h-screen w-screen bg-black flex flex-col overflow-hidden fixed inset-0",
+                        style: {
+                            paddingTop: 'env(safe-area-inset-top)',
+                            paddingRight: 'env(safe-area-inset-right)',
+                            paddingBottom: 'env(safe-area-inset-bottom)',
+                            paddingLeft: 'env(safe-area-inset-left)'
+                        }
+                    }, [
                 // Display
                 React.createElement('div', {
                     key: 'display',
@@ -454,7 +445,9 @@ window.addEventListener('load', () => {
                     React.createElement('div', {
                         key: 'menu',
                         className: "w-full pt-4 pb-2",
-                    }, React.createElement(MenuIcon)),
+                        onClick: handleMenuClick,
+                        style: { cursor: 'pointer' }
+                    }, React.createElement(MenuIcon))
                     
                     // Spacer
                     React.createElement('div', {

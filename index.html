@@ -388,6 +388,7 @@ const getButtonStyle = (type) => {
               paddingBottom: 'env(safe-area-inset-bottom)',
               paddingLeft: 'env(safe-area-inset-left)'
             }
+              onTouchEnd: handleTouchEnd
           }, [
             // Display
            React.createElement('div', {
@@ -406,36 +407,8 @@ const getButtonStyle = (type) => {
     className: "flex-1"
   }),
   
-  // Display dell'ultima operazione (se esiste)
-  lastOperation && React.createElement('div', {
-    key: 'last-operation',
-    style: {
-      color: '#b7b7b7',
-      fontSize: '1.5em',
-      width: '100%',
-      display: 'flex',
-      justifyContent: 'flex-end'
-    }
-  }, lastOperation),
-
-  // Display principale
-  React.createElement('div', {
-    key: 'main-display',
-    className: "text-white text-right w-full",
-    style: {
-      minHeight: '2.5em',
-      display: 'flex',
-      alignItems: 'flex-end',
-      justifyContent: 'flex-end',
-      overflowX: 'auto',
-      fontSize: isLandscape ? '2.5em' : '3em',
-      transition: 'font-size 0.2s'
-    }
-  }, display)
-])
   // RIMUOVI onDoubleClick!
-  onTouchEnd: handleTouchEnd
-},
+  
 
 // Mostra l'ultima operazione sopra l'operazione corrente, solo dopo "="
 // Prima del tasto uguale, mostra l’operazione in corso
